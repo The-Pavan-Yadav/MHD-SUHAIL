@@ -80,12 +80,12 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
     }
   };
 
-  if (cases === null) return <div className="max-w-[1000px] mx-auto"><Loading /></div>;
+  if (cases === null) return <div className="max-w-[1000px] mx-auto min-w-0 w-full"><Loading /></div>;
 
   const list = [...cases].sort((a, b) => b.createdAt - a.createdAt);
 
   return (
-    <div className="max-w-[1000px] mx-auto space-y-6 pb-12">
+    <div className="max-w-[1000px] mx-auto space-y-4 sm:space-y-6 pb-8 sm:pb-12 min-w-0 w-full">
       <PageHeader title={t_c('mycase')} sub="Describe your problem — a doctor reviews it and replies here." />
 
       {/* New case form card with glass styling */}
@@ -93,26 +93,26 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         onSubmit={submit}
-        className="bg-surface border border-line rounded-2xl p-6 shadow-md space-y-5 hover:shadow-lg transition-all"
+        className="bg-surface border border-line rounded-xl sm:rounded-2xl p-3.5 sm:p-6 shadow-md space-y-3.5 sm:space-y-5 hover:shadow-lg transition-all min-w-0"
       >
-        <div className="flex items-center gap-2 border-b border-line pb-3">
-          <Stethoscope className="w-5 h-5 text-primary" />
-          <h4 className="text-[14px] font-extrabold text-heading uppercase tracking-wider">New Clinical Case Submission</h4>
+        <div className="flex items-center gap-2 border-b border-line pb-2.5 sm:pb-3">
+          <Stethoscope className="w-5 h-5 text-primary shrink-0" />
+          <h4 className="text-xs sm:text-[14px] font-extrabold text-heading uppercase tracking-wider truncate">New Clinical Case Submission</h4>
         </div>
         
         <div>
           <label className={labelCls}>What is your main problem? *</label>
           <div className="flex gap-2">
-            <textarea rows={2} value={f.chiefComplaint || ''} onChange={(e) => set('chiefComplaint', e.target.value)} className={inputCls + ' h-auto py-2.5 rounded-xl'} placeholder="e.g. Fever and body pain since 2 days" />
+            <textarea rows={2} value={f.chiefComplaint || ''} onChange={(e) => set('chiefComplaint', e.target.value)} className={inputCls + ' h-auto py-2.5 rounded-xl text-xs sm:text-sm'} placeholder="e.g. Fever and body pain since 2 days" />
             <MicButton onText={(t2) => set('chiefComplaint', (f.chiefComplaint || '') + ' ' + t2)} />
           </div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           {FIELDS.slice(0, 2).map(([k, label, mic], i) => (
-            <div key={`${k}-${i}`}>
+            <div key={`${k}-${i}`} className="min-w-0">
               <label className={labelCls}>{label}</label>
               <div className="flex gap-2">
-                <input value={f[k] || ''} onChange={(e) => set(k, e.target.value)} className={inputCls + ' rounded-xl'} />
+                <input value={f[k] || ''} onChange={(e) => set(k, e.target.value)} className={inputCls + ' rounded-xl text-xs sm:text-sm'} />
                 {mic && <MicButton onText={(t2) => set(k, (f[k] || '') + ' ' + t2)} />}
               </div>
             </div>
@@ -120,7 +120,7 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
         </div>
         <div>
           <label className={labelCls}>Where does it hurt? (select all that apply)</label>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {AREAS.map((a, i) => (
               <motion.button
                 whileHover={{ scale: 1.04 }}
@@ -128,29 +128,29 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
                 key={`${a}-${i}`}
                 type="button"
                 onClick={() => setAreas((p) => p.includes(a) ? p.filter((x) => x !== a) : [...p, a])}
-                className={`text-[12px] font-semibold px-3.5 py-1.5 rounded-xl border transition-all ${areas.includes(a) ? 'bg-primary text-white border-primary shadow-sm' : 'bg-surface border-line text-muted hover:text-ink'}`}
+                className={`text-[11px] sm:text-[12px] font-semibold px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl border transition-all ${areas.includes(a) ? 'bg-primary text-white border-primary shadow-sm' : 'bg-surface border-line text-muted hover:text-ink'}`}
               >
                 {a}
               </motion.button>
             ))}
           </div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           {FIELDS.slice(2).map(([k, label], i) => (
-            <div key={`${k}-${i}`}>
+            <div key={`${k}-${i}`} className="min-w-0">
               <label className={labelCls}>{label}</label>
               <div className="flex gap-2">
-                <input value={f[k] || ''} onChange={(e) => set(k, e.target.value)} className={inputCls + ' rounded-xl'} />
+                <input value={f[k] || ''} onChange={(e) => set(k, e.target.value)} className={inputCls + ' rounded-xl text-xs sm:text-sm'} />
                 <MicButton onText={(t2) => set(k, (f[k] || '') + ' ' + t2)} />
               </div>
             </div>
           ))}
-          <div>
+          <div className="min-w-0">
             <label className={labelCls}>Severity</label>
-            <div className="flex gap-2">
+            <div className="flex gap-1.5 sm:gap-2">
               {['Mild', 'Moderate', 'Severe'].map((s, i) => (
                 <button key={`${s}-${i}`} type="button" onClick={() => setSeverity(s)}
-                  className={`flex-1 text-[12px] font-bold px-3 py-2.5 rounded-xl border transition-all ${severity === s ? 'bg-primary text-white border-primary shadow-sm' : 'bg-surface border-line text-muted hover:text-ink'}`}>
+                  className={`flex-1 text-xs sm:text-[12px] font-bold px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl border transition-all ${severity === s ? 'bg-primary text-white border-primary shadow-sm' : 'bg-surface border-line text-muted hover:text-ink'}`}>
                   {s}
                 </button>
               ))}
@@ -162,7 +162,7 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
           whileTap={{ scale: 0.98 }}
           type="submit"
           disabled={busy}
-          className={btnPrimary + ' flex items-center justify-center gap-2 rounded-xl py-3 shadow-md disabled:opacity-70'}
+          className={btnPrimary + ' w-full flex items-center justify-center gap-2 rounded-xl py-2.5 sm:py-3 shadow-md disabled:opacity-70 text-xs sm:text-sm'}
         >
           {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : ''} Submit Case for Review
         </motion.button>
@@ -170,11 +170,11 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
 
       {/* My cases list */}
       <div>
-        <h4 className="text-[12px] font-extrabold text-muted uppercase tracking-wider mb-3">All My Cases ({list.length})</h4>
+        <h4 className="text-[11px] sm:text-[12px] font-extrabold text-muted uppercase tracking-wider mb-2.5 sm:mb-3">All My Cases ({list.length})</h4>
         {list.length === 0 ? (
           <EmptyState icon={<FileText className="w-8 h-8 text-ghost mx-auto" strokeWidth={1.5} />} title="No cases yet" sub="Submit your first case above to start your medical journey." />
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             {(showAllCases ? list : list.slice(0, 3)).map((c, i) => {
               const isExpanded = expandedCaseId === c.id || (i === 0 && expandedCaseId === null);
               return (
@@ -182,17 +182,17 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
                   key={`${c.id}-${i}`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-surface border border-line rounded-2xl p-5 shadow-sm hover:shadow-md transition-all cursor-pointer"
+                  className="bg-surface border border-line rounded-xl sm:rounded-2xl p-3.5 sm:p-5 shadow-sm hover:shadow-md transition-all cursor-pointer min-w-0"
                   onClick={() => setExpandedCaseId(isExpanded ? '' : c.id)}
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1">
+                  <div className="flex items-start justify-between gap-2 sm:gap-3">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="text-[15px] font-bold text-ink">{c.chiefComplaint}</p>
+                        <p className="text-xs sm:text-[15px] font-bold text-ink truncate">{c.chiefComplaint}</p>
                       </div>
-                      <p className="text-[12px] text-muted mt-1 font-medium">{fmtDT(c.createdAt)}{c.area ? ` · ${c.area}` : ''}{c.duration ? ` · ${c.duration}` : ''}</p>
+                      <p className="text-[11px] sm:text-[12px] text-muted mt-0.5 sm:mt-1 font-medium truncate">{fmtDT(c.createdAt)}{c.area ? ` · ${c.area}` : ''}{c.duration ? ` · ${c.duration}` : ''}</p>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                       <StatusChip ok={c.status === 'reviewed'} warn={c.status === 'waiting'}>
                         {c.status === 'reviewed' ? 'Reviewed' : 'Waiting'}
                       </StatusChip>
@@ -209,10 +209,10 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="mt-4 pt-4 border-t border-line/60 space-y-3 text-[13px]"
+                        className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-line/60 space-y-2.5 sm:space-y-3 text-xs sm:text-[13px]"
                       >
                         {c.status === 'reviewed' ? (
-                          <div className="bg-ok-bg/30 border border-ok-bd/30 rounded-xl p-4 space-y-2">
+                          <div className="bg-ok-bg/30 border border-ok-bd/30 rounded-xl p-3 sm:p-4 space-y-1.5 sm:space-y-2">
                             <p className="text-muted"><b className="text-ink">{c.doctorName}</b> reviewed · {fmtDT(c.reviewedAt)} · {c.fee ? `Fee ₹${c.fee}` : ''}</p>
                             {c.doctorNotes && <p><b className="text-heading">Notes:</b> {c.doctorNotes}</p>}
                             {c.observations && <p><b className="text-heading">Observations:</b> {c.observations}</p>}
@@ -221,7 +221,7 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
                             {c.followupDays && <p><b className="text-heading">Follow-up:</b> in {c.followupDays} days</p>}
                           </div>
                         ) : (
-                          <div className="bg-warn-bg/20 border border-warn-bd/30 rounded-xl p-3 text-muted text-[12px] flex items-center gap-2">
+                          <div className="bg-warn-bg/20 border border-warn-bd/30 rounded-xl p-2.5 sm:p-3 text-muted text-[11px] sm:text-[12px] flex items-center gap-2">
                             <AlertCircle className="w-4 h-4 text-warn shrink-0" />
                             <span>This case is currently queued in the clinical review workspace. A registered doctor will review your telemetry shortly.</span>
                           </div>
@@ -233,7 +233,7 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
               );
             })}
             {list.length > 3 && (
-              <button onClick={() => setShowAllCases((v) => !v)} className="text-[13px] font-semibold text-primary hover:underline">
+              <button onClick={() => setShowAllCases((v) => !v)} className="text-xs sm:text-[13px] font-semibold text-primary hover:underline">
                 {showAllCases ? 'Show fewer cases' : `View all ${list.length} cases`}
               </button>
             )}
@@ -242,7 +242,7 @@ export default function MyCaseTab({ patientData }: { patientData: MhdUser }) {
       </div>
 
       {/* Patient-reported profile cards */}
-      <div className="grid lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         <ProfileCard title="Personal" rows={[['DOB', patientData.dob], ['Gender', patientData.gender], ['Blood', patientData.bloodGroup], ['Phone', patientData.phone], ['Address', patientData.address]]} />
         <ProfileCard title="Medical" rows={[['Conditions', patientData.conditions], ['Allergies', patientData.allergies], ['Family history', patientData.familyHistory]]} />
         <ProfileCard title="Surgeries & Accidents" rows={[['Surgeries', patientData.surgeries], ['Accidents', patientData.accidents]]} />

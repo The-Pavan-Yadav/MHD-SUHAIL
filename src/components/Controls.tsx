@@ -27,7 +27,7 @@ export function LangSelect({ className = '' }: { className?: string }) {
       value={activeLang}
       onChange={(e) => { const next = e.target.value; setActiveLang(next); setLanguage(next); window.location.reload(); }}
       onClick={(e) => { try { (e.currentTarget as HTMLSelectElement).showPicker(); } catch { /* native behaviour */ } }}
-      className={className || 'h-[36px] border border-line rounded-[4px] bg-surface text-ink text-[12px] px-2 focus:outline-none focus:border-primary transition-colors [&>option]:bg-white [&>option]:text-[#0f172a]'}
+      className={className || 'h-[28px] sm:h-[36px] border border-line rounded-[4px] bg-surface text-ink text-[10px] sm:text-[12px] px-1.5 sm:px-2 focus:outline-none focus:border-primary transition-colors [&>option]:bg-white [&>option]:text-[#0f172a]'}
     >
       {LANGS.map(([v, n], i) => <option key={`${v}-${i}`} value={v}>{n}</option>)}
     </select>
@@ -43,7 +43,7 @@ export function ThemeSelect({ className = '', insidePortal = false }: { classNam
       value={selectedValue}
       onChange={(e) => { const next = e.target.value as ThemeName; setActiveTheme(next); applyTheme(next); toast('Theme changed'); }}
       onClick={(e) => { try { (e.currentTarget as HTMLSelectElement).showPicker(); } catch { /* native behaviour */ } }}
-      className={className || 'h-[36px] border border-line rounded-[4px] bg-surface text-ink text-[12px] px-2 focus:outline-none focus:border-primary transition-colors [&>option]:bg-white [&>option]:text-[#0f172a]'}
+      className={className || 'h-[28px] sm:h-[36px] border border-line rounded-[4px] bg-surface text-ink text-[10px] sm:text-[12px] px-1.5 sm:px-2 focus:outline-none focus:border-primary transition-colors [&>option]:bg-white [&>option]:text-[#0f172a]'}
     >
       <option value="light">White Mode</option>
       <option value="dark">Dark Mode</option>

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState, useRef } from 'react';
-import { User, Stethoscope, Shield, ArrowLeft, Loader2, ShieldCheck, HeartHandshake, Info, Lock, Sparkles, Fingerprint, ArrowRight, Home, Mail, Headphones, HeartPulse, Building2, Users, CheckCircle2, Globe2, Activity, Sun, ChevronDown, ArrowUp, Brain, Microscope, ScanLine, FolderHeart, Wifi } from 'lucide-react';
+import { User, Stethoscope, Shield, ArrowLeft, Loader2, ShieldCheck, HeartHandshake, Info, Lock, Sparkles, Fingerprint, ArrowRight, Home, Mail, Headphones, HeartPulse, Building2, Users, CheckCircle2, Globe2, Activity, Sun, ChevronDown, ArrowUp, Brain, Microscope, ScanLine, FolderHeart, Wifi, Menu, X } from 'lucide-react';
 import Modal from './components/Modal';
 import { loginWithFingerprint } from './lib/fingerprint';
 import { getTheme } from './lib/prefs';
@@ -53,10 +53,11 @@ const DEMO: Record<PortalType, { email: string; profile: Record<string, unknown>
   },
 };
 
-const Logo = ({ className = 'w-8 h-8' }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 32 32" fill="#dc2626" xmlns="http://www.w3.org/2000/svg">
-    <path d="M16 0L30 8V24L16 32L2 24V8L16 0ZM16 4.6L6 10.4V21.6L16 27.4L26 21.6V10.4L16 4.6Z" />
-    <rect x="12" y="12" width="8" height="8" />
+const Logo = ({ className = 'w-8 h-8', fill = 'currentColor', innerFill }: { className?: string; fill?: string; innerFill?: string }) => (
+  <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 2L2 9.5V22.5L16 30L30 22.5V9.5L16 2Z" fill={fill} fillOpacity="0.15" />
+    <path d="M16 5.5L5 11.5V20.5L16 26.5L27 20.5V11.5L16 5.5Z" fill={fill} fillOpacity="0.35" />
+    <path fillRule="evenodd" clipRule="evenodd" d="M16 9L8 13.5V18.5L16 23L24 18.5V13.5L16 9ZM17.5 12V14.5H20V17.5H17.5V20H14.5V17.5H12V14.5H14.5V12H17.5Z" fill={innerFill || fill} />
   </svg>
 );
 
@@ -436,14 +437,6 @@ export default function App() {
     );
   }
 
-  const portalCopy: Record<PortalType, { icon: React.ReactNode; title: string; desc: string }> = {
-    patient: { icon: <User className="w-[24px] h-[24px] text-heading shrink-0" strokeWidth={1.5} />, title: 'PATIENT PORTAL', desc: 'Access your medical records, medicines, appointments and care plan.' },
-    caretaker: { icon: <HeartHandshake className="w-[24px] h-[24px] text-heading shrink-0" strokeWidth={1.5} />, title: 'CARETAKER PORTAL', desc: 'Track a patient’s medicines and care instructions and report completion to the doctor.' },
-    doctor: { icon: <Stethoscope className="w-[24px] h-[24px] text-heading shrink-0" strokeWidth={1.5} />, title: 'DOCTOR PORTAL', desc: 'Review cases, enter vitals, verify medicines and consult patients.' },
-    hospital: { icon: <Shield className="w-[24px] h-[24px] text-heading shrink-0" strokeWidth={1.5} />, title: 'HOSPITAL PORTAL', desc: 'Manage this hospital, its doctors, patients, records and appointments.' },
-    admin: { icon: <ShieldCheck className="w-[24px] h-[24px] text-heading shrink-0" strokeWidth={1.5} />, title: 'GOVERNMENT ADMIN PORTAL', desc: 'Official government healthcare oversight for registered hospitals, doctors, patients, and system-wide reports.' },
-  };
-
   return (
     <div className="min-h-screen w-full bg-[#f5f8fa] text-ink font-sans flex flex-col">
       <style>{`
@@ -460,8 +453,9 @@ export default function App() {
           box-shadow: 0 6px 20px rgba(15,23,42,.08);
         }
         .auth-input {
-          width: 100%;
-          height: 45px;
+  width: 100%;
+  height: 40px;
+  @media (min-width: 640px) { height: 45px; }
           padding: 0 14px;
           border: 1px solid #e5e7eb;
           border-radius: 8px;
@@ -521,8 +515,12 @@ export default function App() {
 }
 
 .auth-brand-logo {
-  width: 42px;
-  height: 42px;
+  width: 26px;
+  height: 26px;
+  @media (min-width: 640px) {
+    width: 42px;
+    height: 42px;
+  }
   display: flex;
   align-items: center;
   justify-content: center;
@@ -536,8 +534,12 @@ export default function App() {
 }
 
 .auth-brand-logo svg {
-  width: 24px !important;
-  height: 24px !important;
+  width: 14px !important;
+  height: 14px !important;
+  @media (min-width: 640px) {
+    width: 24px !important;
+    height: 24px !important;
+  }
   fill: #22c55e !important;
   filter:
     drop-shadow(0 0 4px rgba(34, 197, 94, 0.9))
@@ -546,7 +548,10 @@ export default function App() {
 
 .auth-brand-name {
   color: #16a34a;
-  font-size: 23px;
+  font-size: 14px;
+  @media (min-width: 640px) {
+    font-size: 23px;
+  }
   font-weight: 700;
   letter-spacing: 0.3px;
   text-shadow:
@@ -557,7 +562,10 @@ export default function App() {
 
 .auth-brand-subtitle {
   color: #22a55a;
-  font-size: 9px;
+  font-size: 6px;
+  @media (min-width: 640px) {
+    font-size: 9px;
+  }
   font-weight: 600;
   letter-spacing: 2px;
   margin-top: 2px;
@@ -661,15 +669,15 @@ export default function App() {
       `}</style>
 
       {/* Header */}
-      <header className="h-[70px] shrink-0 bg-white border-b border-gray-200 flex items-center justify-end px-5 sm:px-8 gap-3">
+      <header className="h-[48px] sm:h-[70px] shrink-0 bg-white border-b border-gray-200 flex items-center justify-end px-3 sm:px-8 gap-1.5 sm:gap-3">
         <LangSelect />
         <ThemeSelect />
       </header>
-      <main className="auth-page-bg auth-glow-page flex-1 w-full px-4 py-8 sm:px-6 lg:px-8">
+      <main className="auth-page-bg auth-glow-page flex-1 flex flex-col w-full px-3 py-3 sm:py-8 sm:px-6 lg:px-8">
         {/* United Madication branding */}
-<div className="auth-branding">
+<div className="auth-branding mx-auto sm:mx-0 justify-center sm:justify-start">
   <div className="auth-brand-logo">
-    <Logo className="w-9 h-9" />
+    <Logo className="w-4 h-4 sm:w-6 sm:h-6" />
   </div>
 
   <div>
@@ -682,74 +690,13 @@ export default function App() {
     </div>
   </div>
 </div>
-        <div className="mx-auto w-full max-w-[720px] pt-8 sm:pt-10">
-          {portal === null ? (
-            <>
-              <div className="mb-6">
-                <h2 className="text-[24px] md:text-[28px] font-semibold text-ink mb-1">
-                  Welcome to United Medication in Cooperation
-                </h2>
-                <p className="text-[14px] text-muted">Secure access to your healthcare services.</p>
-              </div>
-
-              <div className="space-y-3">
-                {(['patient', 'caretaker', 'doctor', 'hospital'] as PortalType[]).map((p) => (
-                  <div
-                    key={p}
-                    className="bg-white border border-gray-200 rounded-[10px] p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all"
-                  >
-                    <div className="flex items-start sm:items-center gap-4 flex-1">
-                      {portalCopy[p].icon}
-                      <div>
-                        <h3 className="text-[15px] font-semibold text-ink mb-1">{portalCopy[p].title}</h3>
-                        <p className="text-[13px] text-muted leading-relaxed pr-2">{portalCopy[p].desc}</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2 shrink-0 w-full sm:w-[180px]">
-                      <button
-                        type="button"
-                        onClick={() => selectPortal(p, false)}
-                        className="h-[38px] px-4 auth-primary-btn rounded-[7px] text-[13px] font-medium shadow-sm w-full"
-                      >
-                        {p === 'hospital' ? 'Sign in as Hospital' : `Sign in as ${p}`}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => selectPortal(p, true)}
-                        className="h-[38px] px-4 bg-[#f0fdf4] border border-[#bbf7d0] text-green-700 rounded-[7px] text-[13px] font-medium transition-colors hover:bg-[#dcfce7] w-full"
-                      >
-                        Create new account
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-gray-200">
-                <p className="text-[11px] font-semibold text-muted uppercase tracking-wider mb-2">→ Demo accounts</p>
-                <div className="flex flex-wrap gap-2">
-                  {(['patient', 'caretaker', 'doctor', 'hospital'] as PortalType[]).map((p) => (
-                    <button
-                      key={p}
-                      type="button"
-                      onClick={() => quickDemo(p)}
-                      disabled={authLoading}
-                      className="h-[32px] px-3 bg-transparent border border-gray-200 text-muted text-[12px] font-medium rounded-[4px] hover:bg-white hover:text-green-700 hover:border-green-200 transition-colors disabled:opacity-60"
-                    >
-                      {p[0].toUpperCase() + p.slice(1)} Demo
-                    </button>
-                  ))}
-                </div>
-                <p className="text-[11px] text-muted mt-2">Demo accounts — created automatically on first use. Password: demo123</p>
-              </div>
-            </>
-          ) : (
-            <div>
+        <div className={`mx-auto w-full pt-3 sm:pt-10 ${isRegistering ? 'max-w-full sm:max-w-[720px]' : 'max-w-[340px] sm:max-w-[440px]'}`}>
+          <div>
               {/* Back */}
               <button
                 type="button"
                 onClick={() => selectPortal(null, false)}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 mb-4 rounded-full border border-gray-200 bg-white text-[13px] font-semibold auth-link shadow-sm hover:border-green-300 transition-colors"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2.5 mb-2 sm:mb-4 rounded-full border border-gray-200 bg-white text-[11px] sm:text-[13px] font-semibold auth-link shadow-sm hover:border-green-300 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back to portal selection
@@ -763,8 +710,8 @@ export default function App() {
 
               {!isRegistering ? (
                 /* ---------- LOGIN ---------- */
-                <form onSubmit={handleLogin} className="auth-main-card rounded-[20px] p-6 sm:p-7 lg:p-7">
-                  <h3 className="text-[18px] font-semibold auth-link mb-1">
+                <form onSubmit={handleLogin} className="auth-main-card rounded-[14px] sm:rounded-[20px] p-4 sm:p-7 w-full">
+                  <h3 className="text-[16px] sm:text-[18px] font-semibold auth-link mb-0.5 sm:mb-1">
                     {portal === 'patient' && 'Patient Sign In'}
                     {portal === 'caretaker' && 'Caretaker Sign In'}
                     {portal === 'doctor' && 'Doctor Sign In'}
@@ -772,16 +719,16 @@ export default function App() {
                     {portal === 'admin' && 'Government Admin Portal'}
                   </h3>
 
-                  <p className="text-[13px] text-muted mb-4 border-b border-gray-200 pb-3">
+                  <p className="text-[11px] sm:text-[13px] text-muted mb-2 sm:mb-4 border-b border-gray-200 pb-2 sm:pb-3 leading-tight">
                     {portal === 'admin'
                       ? 'Enter official government administrator password to proceed'
                       : 'Login to continue to your health portal'}
                   </p>
 
-                  <div className="space-y-3.5">
+                  <div className="space-y-2.5 sm:space-y-3.5">
                     {portal !== 'admin' && (
                       <div>
-                        <label className="block text-[13px] font-semibold auth-link mb-1.5">Email address</label>
+                        <label className="block text-[12px] sm:text-[13px] font-semibold auth-link mb-1 sm:mb-1.5">Email address</label>
                         <input
                           type="email"
                           required
@@ -794,7 +741,7 @@ export default function App() {
                     )}
 
                     <div>
-                      <label className="block text-[13px] font-semibold auth-link mb-1.5">
+                      <label className="block text-[12px] sm:text-[13px] font-semibold auth-link mb-1 sm:mb-1.5">
                         {portal === 'admin' ? 'Administrator Password' : 'Password'}
                       </label>
                       <input
@@ -809,7 +756,7 @@ export default function App() {
                     </div>
 
                     <div className="flex items-center justify-between pt-1">
-                      <label className="flex items-center gap-2 text-[13px] text-muted cursor-pointer">
+                      <label className="flex items-center gap-2 text-[12px] sm:text-[13px] text-muted cursor-pointer">
                         <input
                           type="checkbox"
                           checked={rememberMe}
@@ -823,7 +770,7 @@ export default function App() {
                         <button
                           type="button"
                           onClick={handleForgot}
-                          className="text-[13px] font-semibold auth-link hover:underline"
+                          className="text-[12px] sm:text-[13px] font-semibold auth-link hover:underline"
                         >
                           Forgot password?
                         </button>
@@ -834,7 +781,7 @@ export default function App() {
                       <button
                         type="submit"
                         disabled={authLoading}
-                        className="w-full h-[44px] auth-primary-btn rounded-[7px] text-[14px] font-medium shadow-sm flex items-center justify-center disabled:opacity-80"
+                        className="w-full h-[40px] sm:h-[44px] auth-primary-btn rounded-[7px] text-[13px] sm:text-[14px] font-medium shadow-sm flex items-center justify-center disabled:opacity-80"
                       >
                         {authLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : (portal === 'admin' ? 'Access Admin Portal' : 'Sign In')}
                       </button>
@@ -844,7 +791,7 @@ export default function App() {
                           type="button"
                           onClick={handleDummyFingerprintLogin}
                           disabled={authLoading}
-                          className="w-full h-[44px] mt-2 border border-green-600 text-green-700 bg-white rounded-[7px] text-[13px] font-medium hover:bg-green-50 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+                          className="w-full h-[40px] sm:h-[44px] mt-2 border border-green-600 text-green-700 bg-white rounded-[7px] text-[12px] sm:text-[13px] font-medium hover:bg-green-50 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
                         >
                           <Fingerprint className="w-4 h-4" /> Continue with fingerprint (demo)
                         </button>
@@ -856,7 +803,7 @@ export default function App() {
                         <button
                           type="button"
                           onClick={() => { setIsRegistering(true); setAuthError(''); }}
-                          className="text-[13px] font-semibold auth-link hover:underline transition-colors"
+                          className="text-[12px] sm:text-[12px] sm:text-[13px] font-semibold auth-link hover:underline transition-colors"
                         >
                           Don&apos;t have an account? Create an account
                         </button>
@@ -866,8 +813,8 @@ export default function App() {
                 </form>
               ) : (
                 /* ---------- REGISTER ---------- */
-                <form onSubmit={handleRegister} className="auth-main-card rounded-[20px] p-6 sm:p-7 lg:p-7">
-                  <h3 className="text-[18px] font-semibold auth-link mb-4 border-b border-gray-200 pb-3">
+                <form onSubmit={handleRegister} className="auth-main-card rounded-[14px] sm:rounded-[20px] p-4 sm:p-7 w-full">
+                  <h3 className="text-[16px] sm:text-[18px] font-semibold auth-link mb-2.5 sm:mb-4 border-b border-gray-200 pb-2 sm:pb-3">
                     {portal === 'patient' && 'Create Patient Account'}
                     {portal === 'doctor' && 'Register as Doctor'}
                     {portal === 'hospital' && 'Register Hospital'}
@@ -985,7 +932,7 @@ export default function App() {
                     </div>
 
                     <div className="pt-3 text-center">
-                      <button type="button" onClick={() => { setIsRegistering(false); setAuthError(''); }} className="text-[13px] font-semibold auth-link hover:underline transition-colors">
+                      <button type="button" onClick={() => { setIsRegistering(false); setAuthError(''); }} className="text-[12px] sm:text-[12px] sm:text-[13px] font-semibold auth-link hover:underline transition-colors">
                         Already have an account? Sign in
                       </button>
                     </div>
@@ -993,7 +940,6 @@ export default function App() {
                 </form>
               )}
             </div>
-          )}
         </div>
       </main>
 
@@ -1196,6 +1142,7 @@ function LandingPage({
   }, []);
   // Which landing page is shown: 'home' | 'portals' | 'demos'
   const [page, setPage] = useState<'home' | 'portals' | 'demos'>('home');
+  const [mobileSideMenu, setMobileSideMenu] = useState(false);
 
   /* About-box carousel: 8 slides, auto-advance every 2.5s, long-press to pause */
   const [slide, setSlide] = useState(0);
@@ -1225,28 +1172,28 @@ function LandingPage({
       key: 'patient',
       title: 'Patient',
       subtitle: 'Own your lifelong health identity, records, medicines and care journey.',
-      icon: <User className="w-6 h-6" strokeWidth={1.7} />,
+      icon: <User className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={1.7} />,
       badge: 'PERSONAL CARE',
     },
     {
       key: 'caretaker',
       title: 'Caretaker',
       subtitle: 'Coordinate medicines, care tasks and patient updates with confidence.',
-      icon: <HeartHandshake className="w-6 h-6" strokeWidth={1.7} />,
+      icon: <HeartHandshake className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={1.7} />,
       badge: 'CONNECTED CARE',
     },
     {
       key: 'doctor',
       title: 'Doctor',
       subtitle: 'Review verified records, vitals, prescriptions and patient history faster.',
-      icon: <Stethoscope className="w-6 h-6" strokeWidth={1.7} />,
+      icon: <Stethoscope className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={1.7} />,
       badge: 'CLINICAL ACCESS',
     },
     {
       key: 'hospital',
       title: 'Hospital',
       subtitle: 'Manage hospital operations, doctors, patients, records and appointments.',
-      icon: <Building2 className="w-6 h-6" strokeWidth={1.7} />,
+      icon: <Building2 className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={1.7} />,
       badge: 'HOSPITAL HUB',
     },
   ];
@@ -1257,10 +1204,10 @@ function LandingPage({
     email: string;
     icon: React.ReactNode;
   }> = [
-    { key: 'patient', title: 'Patient Demo', email: 'patient.demo@mhdhospital.in', icon: <User className="w-5 h-5" /> },
-    { key: 'caretaker', title: 'Caretaker Demo', email: 'caretaker.demo@mhdhospital.in', icon: <HeartHandshake className="w-5 h-5" /> },
-    { key: 'doctor', title: 'Doctor Demo', email: 'doctor.demo@mhdhospital.in', icon: <Stethoscope className="w-5 h-5" /> },
-    { key: 'hospital', title: 'Hospital Demo', email: 'hospital.demo@mhdhospital.in', icon: <Building2 className="w-5 h-5" /> },
+    { key: 'patient', title: 'Patient Demo', email: 'patient.demo@mhdhospital.in', icon: <User className="w-4 h-4 sm:w-5 sm:h-5" /> },
+    { key: 'caretaker', title: 'Caretaker Demo', email: 'caretaker.demo@mhdhospital.in', icon: <HeartHandshake className="w-4 h-4 sm:w-5 sm:h-5" /> },
+    { key: 'doctor', title: 'Doctor Demo', email: 'doctor.demo@mhdhospital.in', icon: <Stethoscope className="w-4 h-4 sm:w-5 sm:h-5" /> },
+    { key: 'hospital', title: 'Hospital Demo', email: 'hospital.demo@mhdhospital.in', icon: <Building2 className="w-4 h-4 sm:w-5 sm:h-5" /> },
   ];
 
   const benefits = [
@@ -1299,7 +1246,7 @@ function LandingPage({
   const dots = Array.from({ length: 92 });
 
   return (
-    <div className={`um-page relative min-h-screen overflow-x-hidden bg-[#020b0a] text-white selection:bg-emerald-300/30${landingTheme === 'light' ? ' landing-light' : ''}`}>
+    <div className={`um-page relative bg-[#020b0a] text-white selection:bg-emerald-300/30${landingTheme === 'light' ? ' landing-light' : ''}`}>
       <style>{`
       /* =========================================================
    MHD HOSPITAL — GLOWING GREEN AUTHENTICATION EXPERIENCE
@@ -1666,7 +1613,7 @@ function LandingPage({
   }
 
   .auth-brand-subtitle {
-    font-size: 7px;
+    font-size: 6px;
   }
 }
 
@@ -1785,7 +1732,8 @@ function LandingPage({
           background: #000;
           border-top: 1px solid rgba(52,211,153,.2);
           border-bottom: 1px solid rgba(52,211,153,.2);
-          padding: 10px 0;
+          padding: 5px 0;
+          @media (min-width: 640px) { padding: 10px 0; }
         }
         .landing-marquee .um-marquee { color: #86efac; }
         .landing-marquee .um-marquee-separator { color: #22c55e; }
@@ -1868,56 +1816,181 @@ function LandingPage({
 
       {/* Navbar */}
       <header className="sticky top-0 z-50 border-b border-white/[.08] bg-[#020b0a]/75 backdrop-blur-2xl">
-        <nav className="mx-auto flex h-[72px] max-w-[1320px] items-center justify-between px-5 sm:px-8 lg:px-10">
-          <a href="#home" className="group flex items-center gap-3">
-            <span className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-300/20 bg-emerald-300/10 text-emerald-200 shadow-[0_0_30px_rgba(52,211,153,.1)]">
-              <Logo className="h-6 w-6" />
-              <span className="absolute inset-0 rounded-xl border border-emerald-300/20 opacity-0 transition-opacity group-hover:opacity-100" />
-            </span>
-            <span className="hidden sm:block">
-              <span className="block text-[13px] font-bold tracking-[.14em] text-white whitespace-nowrap">UNITED MEDICATION INC</span>
-              <span className="block text-[7.5px] font-medium uppercase tracking-[.18em] text-emerald-200/55 whitespace-nowrap mt-0.5">Internationally Digitalized Healthcare Network</span>
-            </span>
-          </a>
-
-          <div className="flex items-center gap-2 sm:gap-3">
-            <a href="#home" onClick={(e) => { e.preventDefault(); setPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="hidden sm:inline-flex flex-col items-center gap-1 px-2.5 py-2 text-[13.5px] font-medium text-emerald-300 whitespace-nowrap">
-              <span className="inline-flex items-center gap-1.5"><Home className="h-4 w-4" /><span>Home</span></span>
-              <span className="h-[2px] w-7 rounded-full bg-emerald-300" />
+        <nav className="mx-auto flex h-[46px] sm:h-[56px] max-w-[1320px] items-center justify-between px-2.5 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
+            <button
+              type="button"
+              onClick={() => setMobileSideMenu(true)}
+              className="sm:hidden flex items-center justify-center h-7 w-7 rounded-lg border border-white/15 bg-white/[.06] text-emerald-300 hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
+              aria-label="Open side menu"
+            >
+              <Menu className="h-4 w-4" />
+            </button>
+            <a href="#home" onClick={(e) => { e.preventDefault(); setPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="group flex items-center gap-1.5 sm:gap-2.5">
+              <span className="relative flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-lg sm:rounded-xl border border-emerald-300/30 bg-emerald-300/10 text-emerald-300 shadow-[0_0_25px_rgba(52,211,153,.2)] transition-all duration-300 group-hover:border-emerald-300/50">
+                <Logo className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-emerald-300 drop-shadow-[0_0_8px_rgba(52,211,153,0.45)]" innerFill="#ffffff" />
+              </span>
+              <span>
+                <span className="block text-[11px] sm:text-[12px] font-bold tracking-[.12em] sm:tracking-[.14em] text-white whitespace-nowrap">UNITED MEDICATION INC</span>
+                <span className="hidden sm:block text-[6.5px] font-medium uppercase tracking-[.18em] text-emerald-200/55 whitespace-nowrap mt-0.5">Internationally Digitalized Healthcare Network</span>
+              </span>
             </a>
-            {[
-              ['Vision 2030', 'about'],
-              ['Contact', 'footer'],
-            ].map(([label, id]) => (
-              <a key={label} href={`#${id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (id === 'roles') { setPage('portals'); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
-                  goHomeThenScroll(id);
-                }}
-                className="hidden md:inline-block px-2.5 py-2 text-[13.5px] font-medium text-white/80 transition hover:text-white whitespace-nowrap">
-                {label}
-              </a>
-            ))}
-            <div className="flex items-center gap-2 h-[42px] rounded-full bg-white px-3.5 shadow-lg ml-1">
-              <Globe2 className="h-[17px] w-[17px] text-[#0f172a] cursor-pointer" onClick={(e) => { const s = (e.currentTarget.parentElement as HTMLElement).querySelector('select') as HTMLSelectElement | null; if (s) { try { s.showPicker(); } catch { s.click(); } } }} />
-              <LangSelect className="flex-1 min-w-0 border-0 bg-transparent text-[13px] font-semibold text-[#0f172a] focus:outline-none appearance-none cursor-pointer [&>option]:bg-white [&>option]:text-[#0f172a]" />
-              <ChevronDown className="h-3.5 w-3.5 text-[#0f172a] cursor-pointer" onClick={(e) => { const s = (e.currentTarget.parentElement as HTMLElement).querySelector('select') as HTMLSelectElement | null; if (s) { try { s.showPicker(); } catch { s.click(); } } }} />
+          </div>
+
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <a href="#home" onClick={(e) => { e.preventDefault(); setPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="hidden sm:inline-flex flex-col items-center gap-1 px-2 py-1 text-[12px] font-medium text-emerald-300 whitespace-nowrap">
+              <span className="inline-flex items-center gap-1.5"><Home className="h-3.5 w-3.5" /><span>Home</span></span>
+              <span className="h-[2px] w-6 rounded-full bg-emerald-300" />
+            </a>
+            <a
+              href="#footer"
+              onClick={(e) => {
+                e.preventDefault();
+                goHomeThenScroll('footer');
+              }}
+              className="hidden md:inline-block px-2 py-1 text-[12px] font-medium text-white/80 transition hover:text-white whitespace-nowrap"
+            >
+              Contact
+            </a>
+          <div className="flex flex-row items-center gap-1 sm:gap-1.5 ml-auto sm:ml-1">
+            <div className="group flex items-center gap-1 sm:gap-1.5 h-[22px] sm:h-[30px] rounded-full border border-white/15 bg-white/[.045] px-1.5 sm:px-2.5 transition hover:border-emerald-300/30 hover:bg-white/[.08]">
+              <Globe2 className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-emerald-200 cursor-pointer" onClick={(e) => { const s = (e.currentTarget.parentElement as HTMLElement).querySelector('select') as HTMLSelectElement | null; if (s) { try { s.showPicker(); } catch { s.click(); } } }} />
+              <LangSelect className="flex-1 min-w-0 border-0 bg-transparent text-[9px] sm:text-[11px] font-medium text-white/90 focus:outline-none appearance-none cursor-pointer [&>option]:bg-white [&>option]:text-[#0f172a] max-w-[42px] sm:max-w-none" />
+              <ChevronDown className="h-2.5 w-2.5 sm:h-3 w-3 text-white/50 cursor-pointer transition group-hover:text-white/80" onClick={(e) => { const s = (e.currentTarget.parentElement as HTMLElement).querySelector('select') as HTMLSelectElement | null; if (s) { try { s.showPicker(); } catch { s.click(); } } }} />
             </div>
-            <div className="hidden sm:flex items-center gap-2 h-[42px] rounded-full bg-white px-3.5 shadow-lg">
-              <Sun className="h-[17px] w-[17px] text-[#0f172a] cursor-pointer" onClick={(e) => { const s = (e.currentTarget.parentElement as HTMLElement).querySelector('select') as HTMLSelectElement | null; if (s) { try { s.showPicker(); } catch { s.click(); } } }} />
-              <ThemeSelect className="flex-1 min-w-0 border-0 bg-transparent text-[13px] font-semibold text-[#0f172a] focus:outline-none appearance-none cursor-pointer [&>option]:bg-white [&>option]:text-[#0f172a]" />
-              <ChevronDown className="h-3.5 w-3.5 text-[#0f172a] cursor-pointer" onClick={(e) => { const s = (e.currentTarget.parentElement as HTMLElement).querySelector('select') as HTMLSelectElement | null; if (s) { try { s.showPicker(); } catch { s.click(); } } }} />
+            <div className="group flex items-center gap-1 sm:gap-1.5 h-[22px] sm:h-[30px] rounded-full border border-white/15 bg-white/[.045] px-1.5 sm:px-2.5 transition hover:border-emerald-300/30 hover:bg-white/[.08]">
+              <Sun className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-emerald-200 cursor-pointer" onClick={(e) => { const s = (e.currentTarget.parentElement as HTMLElement).querySelector('select') as HTMLSelectElement | null; if (s) { try { s.showPicker(); } catch { s.click(); } } }} />
+              <ThemeSelect className="flex-1 min-w-0 border-0 bg-transparent text-[9px] sm:text-[11px] font-medium text-white/90 focus:outline-none appearance-none cursor-pointer [&>option]:bg-white [&>option]:text-[#0f172a] max-w-[42px] sm:max-w-none" />
+              <ChevronDown className="h-2.5 w-2.5 sm:h-3 w-3 text-white/50 cursor-pointer transition group-hover:text-white/80" onClick={(e) => { const s = (e.currentTarget.parentElement as HTMLElement).querySelector('select') as HTMLSelectElement | null; if (s) { try { s.showPicker(); } catch { s.click(); } } }} />
             </div>
+          </div>
           </div>
         </nav>
       </header>
+
+      {/* Mobile Side Menu Bar */}
+      {mobileSideMenu && (
+        <div className="fixed inset-0 z-[100] flex sm:hidden bg-black/75 backdrop-blur-xs animate-in fade-in duration-150">
+          <aside className="landing-mobile-sidebar w-[265px] max-w-[82vw] h-full bg-[#020b0a] border-r border-emerald-500/20 text-white flex flex-col shadow-2xl overflow-y-auto animate-in slide-in-from-left duration-200">
+            <div className="h-[46px] flex items-center justify-between px-3.5 border-b border-white/10 shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-lg border border-emerald-300/30 bg-emerald-300/10 text-emerald-300">
+                  <Logo className="h-3.5 w-3.5 text-emerald-300" innerFill="#ffffff" />
+                </span>
+                <div>
+                  <span className="block text-[10.5px] font-bold tracking-[.12em] text-white leading-tight">UNITED MEDICATION</span>
+                  <span className="block text-[6px] font-semibold uppercase tracking-[.18em] text-emerald-200/60 leading-none mt-0.5">Healthcare Network</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMobileSideMenu(false)}
+                className="p-1 rounded-md text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="p-2.5 space-y-0.5 border-b border-white/10">
+              <p className="px-2 py-1 text-[8.5px] font-bold uppercase tracking-wider text-emerald-300/70">Main Navigation</p>
+              <button
+                type="button"
+                onClick={() => { setPage('home'); setMobileSideMenu(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition-colors ${page === 'home' ? 'bg-emerald-300/15 text-emerald-300 border border-emerald-300/30 font-semibold' : 'text-white/80 hover:bg-white/5'}`}
+              >
+                <Home className="h-3.5 w-3.5 text-emerald-300 shrink-0" /> Home
+              </button>
+              <button
+                type="button"
+                onClick={() => { setPage('portals'); setMobileSideMenu(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition-colors ${page === 'portals' ? 'bg-emerald-300/15 text-emerald-300 border border-emerald-300/30 font-semibold' : 'text-white/80 hover:bg-white/5'}`}
+              >
+                <Building2 className="h-3.5 w-3.5 text-emerald-300 shrink-0" /> Portals & Roles
+              </button>
+              <button
+                type="button"
+                onClick={() => { setPage('demos'); setMobileSideMenu(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-medium transition-colors ${page === 'demos' ? 'bg-emerald-300/15 text-emerald-300 border border-emerald-300/30 font-semibold' : 'text-white/80 hover:bg-white/5'}`}
+              >
+                <Sparkles className="h-3.5 w-3.5 text-emerald-300 shrink-0" /> Well Wishers Demos
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMobileSideMenu(false); setActiveInfoModal('features'); }}
+                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-white/80 hover:bg-white/5 transition-colors"
+              >
+                <Activity className="h-3.5 w-3.5 text-emerald-300 shrink-0" /> Platform Features
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMobileSideMenu(false); onAbout(); }}
+                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-white/80 hover:bg-white/5 transition-colors"
+              >
+                <Brain className="h-3.5 w-3.5 text-emerald-300 shrink-0" /> About AI Vision 2030
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMobileSideMenu(false); onPrivacy(); }}
+                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-white/80 hover:bg-white/5 transition-colors"
+              >
+                <Lock className="h-3.5 w-3.5 text-emerald-300 shrink-0" /> Privacy Policy
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMobileSideMenu(false); goHomeThenScroll('footer'); }}
+                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-white/80 hover:bg-white/5 transition-colors"
+              >
+                <Mail className="h-3.5 w-3.5 text-emerald-300 shrink-0" /> Contact Support
+              </button>
+            </div>
+
+            <div className="p-2.5 space-y-1.5 border-b border-white/10">
+              <p className="px-2 text-[8.5px] font-bold uppercase tracking-wider text-emerald-300/70">Quick Portals</p>
+              <div className="grid grid-cols-2 gap-1">
+                {roles.map((r) => (
+                  <button
+                    key={r.key}
+                    type="button"
+                    onClick={() => { setMobileSideMenu(false); onLogin(r.key); }}
+                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-white/[.04] border border-white/10 text-[10px] font-semibold text-white hover:bg-emerald-300/10 hover:border-emerald-300/30 transition-colors"
+                  >
+                    <span className="text-emerald-300 shrink-0">{r.icon}</span>
+                    <span className="truncate">{r.title}</span>
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => { setMobileSideMenu(false); onAdmin(); }}
+                className="w-full flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg bg-emerald-300/10 border border-emerald-300/20 text-[10px] font-bold text-emerald-200 hover:bg-emerald-300/20 transition-colors"
+              >
+                <Shield className="w-3 h-3 text-emerald-300 shrink-0" /> Official Admin Portal
+              </button>
+            </div>
+
+            <div className="p-2.5 mt-auto space-y-2 bg-black/40">
+              <div className="flex items-center gap-1.5">
+                <div className="flex-1 flex items-center gap-1 h-[26px] rounded-lg border border-white/15 bg-white/[.05] px-1.5">
+                  <Globe2 className="h-2.5 w-2.5 text-emerald-300 shrink-0" />
+                  <LangSelect className="w-full border-0 bg-transparent text-[9.5px] font-medium text-white focus:outline-none [&>option]:bg-[#020b0a] [&>option]:text-white" />
+                </div>
+                <div className="flex-1 flex items-center gap-1 h-[26px] rounded-lg border border-white/15 bg-white/[.05] px-1.5">
+                  <Sun className="h-2.5 w-2.5 text-emerald-300 shrink-0" />
+                  <ThemeSelect className="w-full border-0 bg-transparent text-[9.5px] font-medium text-white focus:outline-none [&>option]:bg-[#020b0a] [&>option]:text-white" />
+                </div>
+              </div>
+            </div>
+          </aside>
+          <div className="flex-1 cursor-pointer" onClick={() => setMobileSideMenu(false)} aria-label="Close menu" />
+        </div>
+      )}
 
       {/* Dynamic strip in the marked gap below the navbar */}
       <div className="landing-marquee">
         <div className="um-marquee flex w-max items-center gap-8 whitespace-nowrap">
           {[0, 1].map((dup) => (
-            <span key={dup} className="flex items-center gap-8 px-4 text-[12px] font-bold uppercase tracking-[.14em]">
+            <span key={dup} className="flex items-center gap-8 px-4 text-[8.5px] sm:text-[12px] font-bold uppercase tracking-[.14em]">
               <span>United Medication Inc</span><span className="um-marquee-separator">|</span>
               <span>The Best Online Health Platform In India</span><span className="um-marquee-separator">|</span>
               <span>Connected Healthcare • Real-Time Care</span><span className="um-marquee-separator">|</span>
@@ -1931,71 +2004,73 @@ function LandingPage({
       <main className="relative z-10">
         {page === 'home' && (<>
         {/* HERO */}
-        <section id="home" className="relative mx-auto flex min-h-[calc(100vh-72px)] max-w-[1320px] items-center px-5 py-20 sm:px-8 lg:px-10 lg:py-24">
-          <div className="grid w-full items-center gap-14 lg:grid-cols-[1.06fr_.94fr]">
+        <section id="home" className="relative mx-auto flex min-h-0 sm:min-h-[calc(100vh-56px)] max-w-[1320px] items-center px-3 py-2 sm:px-6 lg:px-8 lg:py-12">
+          <div className="grid w-full items-center gap-3 sm:gap-8 lg:grid-cols-[1.06fr_.94fr]">
             <div className="um-reveal">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/[.07] px-4 py-2 text-[11px] font-semibold uppercase tracking-[.2em] text-emerald-200 shadow-[0_0_35px_rgba(52,211,153,.07)]">
-                <span className="relative flex h-2 w-2">
+              <div className="mb-1.5 sm:mb-4 inline-flex items-center gap-1 sm:gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/[.07] px-2 sm:px-3 py-0.5 sm:py-1.5 text-[7px] sm:text-[10px] font-semibold uppercase tracking-[.08em] sm:tracking-[.2em] text-emerald-200 shadow-[0_0_35px_rgba(52,211,153,.07)]">
+                <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-300" />
+                  <span className="relative inline-flex h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-emerald-300" />
                 </span>
                 Connected Healthcare • Real-Time Care
               </div>
 
-              <p className="mb-4 text-sm font-medium uppercase tracking-[.28em] text-white/80">Internationally Digitalized Healthcare Network</p>
+              <p className="mb-0.5 sm:mb-2 text-[7.5px] sm:text-xs font-medium uppercase tracking-[.1em] sm:tracking-[.2em] text-white/80">Internationally Digitalized Healthcare Network</p>
 
-              <h1 className="max-w-4xl text-5xl font-semibold leading-[.98] tracking-[-.055em] sm:text-6xl lg:text-[84px]">
+              <h1 className="max-w-4xl text-[19px] sm:text-5xl lg:text-6xl font-semibold leading-[1.1] sm:leading-tight tracking-[-.04em] break-words">
                 United <span className="um-shimmer-text">Medication</span>
               </h1>
-              <div className="mt-7 min-h-8 text-base font-medium text-emerald-100/75 sm:text-lg">
+              <div className="mt-1 sm:mt-4 min-h-3 sm:min-h-6 text-[9.5px] sm:text-sm font-medium text-emerald-100/75 sm:text-base">
                 <span className="um-typing">One patient. One record. One connected journey.</span>
               </div>
-              <p className="mt-7 max-w-2xl text-base leading-8 text-white/85 sm:text-lg">
+              <p className="mt-1 sm:mt-4 max-w-2xl text-[10.5px] sm:text-sm leading-[1.35] sm:leading-6 text-white/85 sm:text-base">
                 A premium, paperless healthcare ecosystem connecting patients, caretakers, doctors, hospitals and administrators through one synchronized digital experience.
               </p>
 
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <a href="#roles" onClick={(e) => { e.preventDefault(); setPage('portals'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-emerald-300 px-6 text-sm font-bold text-[#032019] shadow-[0_0_35px_rgba(52,211,153,.18)] transition hover:-translate-y-0.5 hover:bg-emerald-200 hover:shadow-[0_0_50px_rgba(52,211,153,.28)]">
-                  Start Journey with UMIC <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <div className="mt-2.5 sm:mt-6 flex flex-row flex-wrap gap-1.5 sm:gap-2.5">
+                <a href="#roles" onClick={(e) => { e.preventDefault(); setPage('portals'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="group inline-flex h-6 sm:h-10 items-center justify-center gap-1 sm:gap-2 rounded-full bg-emerald-300 px-2 sm:px-5 text-[7.5px] sm:text-xs font-bold text-[#032019] shadow-[0_0_35px_rgba(52,211,153,.18)] transition hover:-translate-y-0.5 hover:bg-emerald-200 hover:shadow-[0_0_50px_rgba(52,211,153,.28)]">
+                  Start Journey with UMIC <ArrowRight className="h-2 w-2 sm:h-3.5 sm:w-3.5 transition-transform group-hover:translate-x-1" />
                 </a>
-                <a href="#demos" onClick={(e) => { e.preventDefault(); setPage('demos'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[.045] px-6 text-sm font-semibold text-white/85 transition hover:-translate-y-0.5 hover:border-emerald-300/30 hover:bg-white/[.08]">
-                  <Sparkles className="h-4 w-4 text-emerald-200" /> Try Well Wishers Demo
+                <a href="#demos" onClick={(e) => { e.preventDefault(); setPage('demos'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-6 sm:h-10 items-center justify-center gap-1 sm:gap-2 rounded-full border border-white/15 bg-white/[.045] px-2 sm:px-5 text-[7.5px] sm:text-xs font-semibold text-white/85 transition hover:-translate-y-0.5 hover:border-emerald-300/30 hover:bg-white/[.08]">
+                  <Sparkles className="h-2 w-2 sm:h-3.5 sm:w-3.5 text-emerald-200" /> Try Well Wishers Demo
                 </a>
               </div>
 
-              <div className="mt-12 grid max-w-xl grid-cols-3 gap-3">
+              <div className="mt-3 sm:mt-8 grid max-w-lg grid-cols-3 gap-1 sm:gap-3">
                 {[
                   ['01', 'Digital ID'],
                   ['10', 'Indian Languages'],
                   ['05', 'Connected Portals'],
                 ].map(([value, label]) => (
-                  <div key={label} className="um-glass rounded-2xl p-4">
-                    <p className="text-xl font-semibold text-white sm:text-2xl">{value}</p>
-                    <p className="mt-1 text-[10px] uppercase tracking-[.16em] text-white/65">{label}</p>
+                  <div key={label} className="um-glass rounded-[14px] sm:rounded-2xl p-1.5 sm:p-3">
+                    <p className="text-sm sm:text-lg lg:text-xl font-semibold text-white">{value}</p>
+                    <p className="mt-0.5 sm:mt-1 text-[6.5px] sm:text-[9px] uppercase tracking-[.05em] sm:tracking-[.16em] text-white/65 break-words">{label}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Hero visual */}
-            <div className="relative mx-auto w-full max-w-[600px] lg:ml-auto">
-              <div className="absolute -inset-10 rounded-full bg-emerald-400/10 blur-[80px]" />
-              <div className="um-glass um-border relative overflow-hidden rounded-[34px] p-3 shadow-[0_40px_120px_rgba(0,0,0,.45)]">
-                <div className="relative overflow-hidden rounded-[27px] border border-white/10 bg-[#071613]">
+            <div className="relative mx-auto w-full max-w-[480px] lg:ml-auto">
+              <div className="absolute -inset-4 sm:-inset-8 rounded-full bg-emerald-400/10 blur-[40px] sm:blur-[60px]" />
+              <div className="um-glass um-border relative overflow-hidden rounded-[16px] sm:rounded-[28px] p-1 sm:p-2 shadow-[0_30px_90px_rgba(0,0,0,.45)]">
+                <div className="relative overflow-hidden rounded-[14px] sm:rounded-[20px] border border-white/10 bg-[#071613]">
                   <img
-                    src="https://static.vecteezy.com/system/resources/previews/071/068/760/non_2x/global-healthcare-technology-concept-a-laptop-computer-with-a-stethoscope-resting-on-its-lid-an-overlay-of-a-digital-world-map-with-interconnected-nodes-is-projected-onto-the-laptop-photo.jpeg"
+                    src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1000&q=80"
                     alt="Connected digital healthcare"
-                    className="w-[600px] h-[600px] max-w-full object-cover rounded-2xl opacity-90 sm:w-[650px] sm:h-[650px] lg:w-[700px] lg:h-[700px]"
+                    fetchPriority="high"
+                    decoding="async"
+                    className="w-full h-auto aspect-square object-cover rounded-[14px] sm:rounded-[20px] opacity-90 sm:w-[420px] sm:h-[420px] lg:w-[460px] lg:h-[460px]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#020b0a] via-[#020b0a]/15 to-transparent" />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_55%_35%,rgba(52,211,153,.18),transparent_34%)]" />
                   <div className="um-scan absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-emerald-300/80 to-transparent shadow-[0_0_20px_rgba(52,211,153,.6)]" />
 
-                  <div className="absolute left-5 right-5 top-5 flex items-center justify-between">
-                    <div className="rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[.18em] text-emerald-100/75 backdrop-blur-xl">
+                  <div className="absolute left-4 right-4 top-4 flex items-center justify-between">
+                    <div className="rounded-full border border-white/10 bg-black/30 px-2.5 py-1 text-[8.5px] font-semibold uppercase tracking-[.18em] text-emerald-100/75 backdrop-blur-xl">
                       Live care network
                     </div>
-                    <div className="flex items-center gap-1.5 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1.5 text-[9px] font-semibold text-emerald-100">
+                    <div className="flex items-center gap-1.5 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-2.5 py-1 text-[8.5px] font-semibold text-emerald-100">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,.9)]" /> Synced
                     </div>
                   </div>
@@ -2014,28 +2089,28 @@ function LandingPage({
         </section>
 
         {/* QUOTE + IMAGE — left vision text constant; right panel cycles ECG image + 7 AI slides */}
-        <section id="about" className="mx-auto max-w-[1080px] px-5 py-16 sm:px-8 lg:px-10 lg:py-24">
-          <div className="um-glass um-border grid overflow-hidden rounded-[28px] lg:grid-cols-[.95fr_1.05fr]">
+        <section id="about" className="mx-auto max-w-[1080px] px-3 py-6 sm:px-6 lg:px-8 lg:py-16">
+          <div className="um-glass um-border grid overflow-hidden rounded-[18px] sm:rounded-[24px] lg:grid-cols-[.95fr_1.05fr]">
             {/* LEFT — constant vision text */}
-            <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-14">
-              <div className="mb-6 flex items-center gap-3">
-                <span className="h-px w-10 bg-[#dc2626]/60" />
-                <span className="text-[10px] font-bold uppercase tracking-[.24em] text-[#dc2626]">UMIC Vision 2030</span>
+            <div className="flex flex-col justify-center p-4 sm:p-8 lg:p-10">
+              <div className="mb-2 sm:mb-4 flex items-center gap-2 sm:gap-3">
+                <span className="h-px w-6 sm:w-8 bg-[#dc2626]/60" />
+                <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-[.2em] sm:tracking-[.24em] text-[#dc2626]">UMIC Vision 2030</span>
               </div>
-              <blockquote className="text-2xl font-medium leading-relaxed tracking-[-.025em] text-white sm:text-3xl lg:text-[34px]">
+              <blockquote className="text-base sm:text-2xl lg:text-3xl font-medium leading-snug sm:leading-relaxed tracking-[-.025em] text-white">
                 “Healthcare becomes stronger when every patient, caretaker, doctor and hospital moves as <span className="text-emerald-200">one connected system.</span>”
               </blockquote>
-              <p className="mt-6 max-w-xl text-sm leading-7 text-white/50 sm:text-base">
+              <p className="mt-2.5 sm:mt-4 max-w-xl text-[11px] sm:text-sm leading-relaxed sm:leading-6 text-white/60">
                 United Medication in Cooperation is designed around continuity: your identity, information and care journey stay connected wherever treatment happens.
               </p>
-              <button type="button" onClick={onAbout} className="mt-7 inline-flex w-fit items-center gap-2 text-sm font-semibold text-emerald-200 transition hover:text-emerald-100">
-                Discover our mission <ArrowRight className="h-4 w-4" />
+              <button type="button" onClick={onAbout} className="mt-3.5 sm:mt-5 inline-flex w-fit items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-semibold text-emerald-200 transition hover:text-emerald-100">
+                Discover our mission <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               </button>
             </div>
 
             {/* RIGHT — carousel in the green-line space */}
             <div
-              className="relative min-h-[330px] overflow-hidden border-t border-white/10 lg:min-h-[430px] lg:border-l lg:border-t-0 select-none"
+              className="relative min-h-[220px] sm:min-h-[280px] overflow-hidden border-t border-white/10 lg:min-h-[380px] lg:border-l lg:border-t-0 select-none"
               onPointerDown={() => { longPressRef.current = window.setTimeout(() => setSlidePaused(true), 450); }}
               onPointerUp={() => { if (longPressRef.current) { clearTimeout(longPressRef.current); longPressRef.current = null; } setSlidePaused(false); }}
               onPointerLeave={() => { if (longPressRef.current) { clearTimeout(longPressRef.current); longPressRef.current = null; } setSlidePaused(false); }}
@@ -2048,8 +2123,10 @@ function LandingPage({
               {/* frame 0 — green ECG line image */}
               <div className={`absolute inset-0 transition-opacity duration-500 ${slide === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                 <img
-                  src="https://www.shutterstock.com/shutterstock/videos/4069347349/thumb/1.jpg?ip=x480"
+                  src="https://wsrv.nl/?url=www.shutterstock.com/shutterstock/videos/4069347349/thumb/1.jpg&output=webp&q=80"
                   alt="Healthcare heartbeat visualization"
+                  loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
               </div>
@@ -2057,27 +2134,27 @@ function LandingPage({
               {/* frames 1-7 — AI capabilities */}
               {AI_SLIDES.map((s, i) => (
                 <div key={s.title} className={`absolute inset-0 bg-[#87CEFA] transition-opacity duration-500 ${slide === i + 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                  <div className="relative mx-auto flex h-full w-[80%] flex-col items-center justify-center text-center">
-                    <p className="text-[12px] font-extrabold uppercase tracking-[.22em] text-[#0a0f1a]">INDIA's Medical Vision 2030</p>
-                    <p className="mt-1 text-[11px] font-semibold text-[#0a0f1a]/70">(INDIA's Vision is UMIC vision)</p>
-                    <span className="mt-4 flex h-12 w-12 items-center justify-center rounded-xl border border-[#0a0f1a]/25 bg-white/50 text-[#0a0f1a]">{s.icon}</span>
-                    <p className="mt-3 font-mono text-[10px] tracking-[.3em] text-[#0a0f1a]/60">{String(i + 2).padStart(2, '0')} / 08</p>
-                    <h3 className="mt-2 text-2xl font-extrabold leading-tight text-[#0a0f1a] sm:text-[27px]">{s.title}</h3>
-                    <p className="mt-3 text-[13.5px] font-medium leading-6 text-[#0a0f1a]/85 sm:text-[14.5px]">{s.desc}</p>
+                  <div className="relative mx-auto flex h-full w-[85%] sm:w-[80%] flex-col items-center justify-center text-center p-3 sm:p-4">
+                    <p className="text-[8.5px] sm:text-[10px] font-extrabold uppercase tracking-[.2em] sm:tracking-[.22em] text-[#0a0f1a]">INDIA's Medical Vision 2030</p>
+                    <p className="mt-0.5 text-[8px] sm:text-[9px] font-semibold text-[#0a0f1a]/70">(INDIA's Vision is UMIC vision)</p>
+                    <span className="mt-2 sm:mt-3 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl border border-[#0a0f1a]/25 bg-white/50 text-[#0a0f1a]">{s.icon}</span>
+                    <p className="mt-1 sm:mt-2 font-mono text-[8px] sm:text-[9px] tracking-[.25em] sm:tracking-[.3em] text-[#0a0f1a]/60">{String(i + 2).padStart(2, '0')} / 08</p>
+                    <h3 className="mt-1 text-base sm:text-2xl font-extrabold leading-tight text-[#0a0f1a]">{s.title}</h3>
+                    <p className="mt-1 sm:mt-2 text-[10.5px] sm:text-sm font-medium leading-tight sm:leading-5 text-[#0a0f1a]/85">{s.desc}</p>
                   </div>
                 </div>
               ))}
 
               {/* controls */}
-              <button onClick={() => setSlide((sl) => (sl + AI_SLIDES.length) % (AI_SLIDES.length + 1))} className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white backdrop-blur transition hover:bg-black/60">
-                <ArrowLeft className="h-4 w-4" />
+              <button onClick={() => setSlide((sl) => (sl + AI_SLIDES.length) % (AI_SLIDES.length + 1))} className="absolute left-2 sm:left-3 top-1/2 z-10 flex h-7 w-7 sm:h-8 sm:w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white backdrop-blur transition hover:bg-black/60">
+                <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               </button>
-              <button onClick={() => setSlide((sl) => (sl + 1) % (AI_SLIDES.length + 1))} className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white backdrop-blur transition hover:bg-black/60">
-                <ArrowRight className="h-4 w-4" />
+              <button onClick={() => setSlide((sl) => (sl + 1) % (AI_SLIDES.length + 1))} className="absolute right-2 sm:right-3 top-1/2 z-10 flex h-7 w-7 sm:h-8 sm:w-8 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white backdrop-blur transition hover:bg-black/60">
+                <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               </button>
-              <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+              <div className="absolute bottom-2 sm:bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
                 {Array.from({ length: AI_SLIDES.length + 1 }).map((_, i) => (
-                  <button key={i} onClick={() => setSlide(i)} className={`h-1.5 rounded-full transition-all ${slide === i ? 'w-5 bg-emerald-300' : 'w-1.5 bg-white/40 hover:bg-white/70'}`} />
+                  <button key={i} onClick={() => setSlide(i)} className={`h-1 sm:h-1.5 rounded-full transition-all ${slide === i ? 'w-3.5 sm:w-4 bg-emerald-300' : 'w-1 sm:w-1.5 bg-white/40 hover:bg-white/70'}`} />
                 ))}
               </div>
             </div>
@@ -2085,49 +2162,49 @@ function LandingPage({
         </section>        </>) }
 
         {page === 'portals' && (
-        <section id="roles" className="mx-auto max-w-[1320px] px-5 pt-10 pb-20 sm:px-8 lg:px-10 lg:py-28">
-          <button onClick={() => setPage('home')} className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-emerald-200/80 hover:text-emerald-100 transition-colors">
-            <ArrowLeft className="h-4 w-4" /> Back to home
+        <section id="roles" className="mx-auto max-w-[1320px] px-3 pt-4 pb-6 sm:px-6 lg:px-8 lg:py-16">
+          <button onClick={() => setPage('home')} className="mb-3 sm:mb-4 inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-emerald-200/80 hover:text-emerald-100 transition-colors">
+            <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Back to home
           </button>
-          <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+          <div className="mb-3 sm:mb-8 flex flex-col justify-between gap-1.5 sm:gap-4 md:flex-row md:items-end">
             <div>
-              <div className="mb-4 inline-flex items-center gap-2 text-emerald-200/70">
-                <Users className="h-4 w-4" />
-                <span className="text-[10px] font-bold uppercase tracking-[.24em]">One ecosystem • four access points</span>
+              <div className="mb-1 sm:mb-3 inline-flex items-center gap-1 sm:gap-1.5 text-emerald-200/70">
+                <Users className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                <span className="text-[7px] sm:text-[9px] font-bold uppercase tracking-[.12em] sm:tracking-[.24em]">One ecosystem • four access points</span>
               </div>
-              <h2 className="text-3xl font-semibold tracking-[-.035em] sm:text-5xl">Start Your <span className="text-emerald-200">Journey With UMIC</span></h2>
+              <h2 className="text-[18px] sm:text-4xl font-semibold tracking-[-.035em] leading-[1.2]">Start Your <span className="text-emerald-200">Journey With UMIC</span></h2>
             </div>
-            <p className="max-w-md text-sm leading-6 text-white/80">Every portal is connected to the same real-time health ecosystem while keeping access focused on the user's role.</p>
+            <p className="max-w-md text-[10.5px] sm:text-xs leading-snug sm:leading-5 text-white/80 mt-1 sm:mt-0">Every portal is connected to the same real-time health ecosystem while keeping access focused on the user's role.</p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-2 sm:gap-3 md:grid-cols-2 xl:grid-cols-4">
             {roles.map((role, index) => (
-              <article key={role.key} className="group um-glass um-border relative overflow-hidden rounded-[26px] p-5 transition duration-500 hover:-translate-y-2 hover:border-emerald-300/25 hover:bg-white/[.09] hover:shadow-[0_30px_90px_rgba(16,185,129,.1)]" style={{ animationDelay: `${index * 100}ms` }}>
-                <div className="absolute -right-16 -top-16 h-36 w-36 rounded-full bg-emerald-300/[.06] blur-2xl transition duration-500 group-hover:bg-emerald-300/[.13]" />
-                <div className="um-scan pointer-events-none absolute left-0 top-0 h-20 w-full bg-gradient-to-b from-emerald-300/[.06] to-transparent" style={{ animationDelay: `${-index * .7}s` }} />
+              <article key={role.key} className="group um-glass um-border relative overflow-hidden rounded-[14px] sm:rounded-[20px] p-2.5 sm:p-4 transition duration-500 hover:-translate-y-1.5 hover:border-emerald-300/25 hover:bg-white/[.09] hover:shadow-[0_30px_90px_rgba(16,185,129,.1)]" style={{ animationDelay: `${index * 100}ms` }}>
+                <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-emerald-300/[.06] blur-2xl transition duration-500 group-hover:bg-emerald-300/[.13]" />
+                <div className="um-scan pointer-events-none absolute left-0 top-0 h-16 w-full bg-gradient-to-b from-emerald-300/[.06] to-transparent" style={{ animationDelay: `${-index * .7}s` }} />
 
-                <div className="relative flex items-start justify-between gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-300/20 bg-emerald-300/10 text-emerald-200 shadow-[0_0_28px_rgba(52,211,153,.08)] transition duration-500 group-hover:scale-105 group-hover:bg-emerald-300/15">
+                <div className="relative flex items-start justify-between gap-2">
+                  <div className="flex h-6 w-6 sm:h-10 sm:w-10 items-center justify-center rounded-[8px] sm:rounded-xl border border-emerald-300/20 bg-emerald-300/10 text-emerald-200 shadow-[0_0_28px_rgba(52,211,153,.08)] transition duration-500 group-hover:scale-105 group-hover:bg-emerald-300/15">
                     {role.icon}
                   </div>
-                  <span className="rounded-full border border-white/10 bg-white/[.035] px-2.5 py-1 text-[8px] font-bold tracking-[.16em] text-white/60">{role.badge}</span>
+                  <span className="rounded-full border border-white/10 bg-white/[.035] px-1.5 sm:px-2 py-0.5 text-[6.5px] sm:text-[8px] font-bold tracking-[.1em] sm:tracking-[.16em] text-white/60">{role.badge}</span>
                 </div>
 
-                <div className="relative mt-7">
-                  <h3 className="text-xl font-semibold text-white">{role.title}</h3>
-                  <p className="mt-3 min-h-[72px] text-sm leading-6 text-white/80">{role.subtitle}</p>
+                <div className="relative mt-2 sm:mt-5">
+                  <h3 className="text-sm sm:text-lg font-semibold text-white">{role.title}</h3>
+                  <p className="mt-0.5 sm:mt-2 min-h-[32px] sm:min-h-[60px] text-[10px] sm:text-xs leading-snug sm:leading-5 text-white/80">{role.subtitle}</p>
                 </div>
 
-                <div className="relative mt-6 grid grid-cols-2 gap-2">
-                  <button type="button" onClick={() => onLogin(role.key)} className="h-10 rounded-xl bg-emerald-300 text-xs font-bold text-[#032019] transition hover:bg-emerald-200">Sign in</button>
-                  <button type="button" onClick={() => onSignup(role.key)} className="h-10 rounded-xl border border-white/10 bg-white/[.045] text-xs font-semibold text-white/75 transition hover:border-emerald-300/25 hover:bg-white/[.08] hover:text-white">Create account</button>
+                <div className="relative mt-3 sm:mt-5 grid grid-cols-2 gap-1.5 sm:gap-2">
+                  <button type="button" onClick={() => onLogin(role.key)} className="h-7 sm:h-9 rounded-[8px] sm:rounded-xl bg-emerald-300 text-[9.5px] sm:text-[11px] font-bold text-[#032019] transition hover:bg-emerald-200">Sign in</button>
+                  <button type="button" onClick={() => onSignup(role.key)} className="h-7 sm:h-9 rounded-[8px] sm:rounded-xl border border-white/10 bg-white/[.045] text-[9.5px] sm:text-[11px] font-semibold text-white/75 transition hover:border-emerald-300/25 hover:bg-white/[.08] hover:text-white">Create account</button>
                 </div>
               </article>
             ))}
           </div>
-          <div className="mt-8 flex justify-center">
-            <button type="button" onClick={() => { setPage('demos'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-10 items-center gap-2 rounded-xl border border-emerald-300/25 bg-emerald-300/10 px-5 text-xs font-bold text-emerald-100 transition hover:bg-emerald-300/15">
-              Go with demo accounts <ArrowRight className="h-3.5 w-3.5" />
+          <div className="mt-4 sm:mt-6 flex justify-center">
+            <button type="button" onClick={() => { setPage('demos'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-7 sm:h-9 items-center gap-1.5 rounded-lg sm:rounded-xl border border-emerald-300/25 bg-emerald-300/10 px-3 sm:px-4 text-[10px] sm:text-[11px] font-bold text-emerald-100 transition hover:bg-emerald-300/15">
+              Go with demo accounts <ArrowRight className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             </button>
           </div>
         </section>
@@ -2135,51 +2212,51 @@ function LandingPage({
 
         {page === 'demos' && (
         <section id="demos" className="relative border-y border-white/[.07] bg-white/[.018]">
-          <div className="mx-auto max-w-[1320px] px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
-            <button onClick={() => setPage('home')} className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-emerald-200/80 hover:text-emerald-100 transition-colors">
-              <ArrowLeft className="h-4 w-4" /> Back to home
+          <div className="mx-auto max-w-[1320px] px-3 py-4 sm:px-6 lg:px-8 lg:py-16">
+            <button onClick={() => setPage('home')} className="mb-3 sm:mb-4 inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-emerald-200/80 hover:text-emerald-100 transition-colors">
+              <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Back to home
             </button>
-            <div className="mb-10 max-w-3xl">
-              <div className="mb-4 flex items-center gap-2 text-emerald-200/70">
-                <Sparkles className="h-4 w-4" />
-                <span className="text-[10px] font-bold uppercase tracking-[.24em]">Interactive preview</span>
+            <div className="mb-3 sm:mb-8 max-w-3xl">
+              <div className="mb-1 sm:mb-3 flex items-center gap-1 sm:gap-1.5 text-emerald-200/70">
+                <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                <span className="text-[7px] sm:text-[9px] font-bold uppercase tracking-[.12em] sm:tracking-[.24em]">Interactive preview</span>
               </div>
-              <h2 className="text-3xl font-semibold tracking-[-.035em] sm:text-5xl">Explore the platform with <span className="text-emerald-200">demo access.</span></h2>
-              <p className="mt-4 text-sm leading-7 text-white/80 sm:text-base">These cards use the existing demo-account flow. No new authentication logic is introduced.</p>
+              <h2 className="text-[18px] sm:text-4xl font-semibold tracking-[-.035em] leading-[1.2]">Explore the platform with <span className="text-emerald-200">demo access.</span></h2>
+              <p className="mt-1 sm:mt-3 text-[10.5px] sm:text-sm leading-snug sm:leading-5 text-white/80">These cards use the existing demo-account flow. No new authentication logic is introduced.</p>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-2 sm:gap-3 md:grid-cols-2 xl:grid-cols-4">
               {demoAccounts.map((demo, index) => (
-                <article key={demo.key} className="group um-glass relative overflow-hidden rounded-[24px] p-5 transition duration-500 hover:-translate-y-1.5 hover:border-emerald-300/25" style={{ animationDelay: `${index * 120}ms` }}>
-                  <div className="absolute right-0 top-0 h-24 w-24 rounded-full bg-emerald-300/[.07] blur-2xl" />
-                  <div className="relative flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-300/20 bg-emerald-300/10 text-emerald-200">{demo.icon}</div>
+                <article key={demo.key} className="group um-glass relative overflow-hidden rounded-[14px] sm:rounded-[20px] p-2.5 sm:p-4 transition duration-500 hover:-translate-y-1 hover:border-emerald-300/25" style={{ animationDelay: `${index * 120}ms` }}>
+                  <div className="absolute right-0 top-0 h-20 w-20 rounded-full bg-emerald-300/[.07] blur-2xl" />
+                  <div className="relative flex items-center gap-2">
+                    <div className="flex h-6 w-6 sm:h-9 sm:w-9 items-center justify-center rounded-[7px] sm:rounded-lg border border-emerald-300/20 bg-emerald-300/10 text-emerald-200">{demo.icon}</div>
                     <div>
-                      <p className="text-sm font-semibold text-white">{demo.title}</p>
-                      <p className="mt-0.5 text-[9px] uppercase tracking-[.17em] text-emerald-200/45">Demo environment</p>
+                      <p className="text-[10.5px] sm:text-xs font-semibold text-white">{demo.title}</p>
+                      <p className="mt-0 text-[6.5px] sm:text-[8.5px] uppercase tracking-[.08em] sm:tracking-[.17em] text-emerald-200/45">Demo environment</p>
                     </div>
                   </div>
 
-                  <div className="relative mt-5 space-y-2 rounded-2xl border border-white/[.07] bg-black/20 p-3.5">
+                  <div className="relative mt-2 sm:mt-4 space-y-1 sm:space-y-2 rounded-[8px] sm:rounded-xl border border-white/[.07] bg-black/20 p-1.5 sm:p-3">
                     <div>
-                      <p className="text-[9px] uppercase tracking-[.15em] text-white/30">Email</p>
-                      <p className="mt-1 break-all font-mono text-[11px] text-white/75">{demo.email}</p>
+                      <p className="text-[7px] sm:text-[8.5px] uppercase tracking-[.08em] sm:tracking-[.15em] text-white/30">Email</p>
+                      <p className="mt-0 break-all font-mono text-[8.5px] sm:text-[10px] text-white/75">{demo.email}</p>
                     </div>
-                    <div className="border-t border-white/[.06] pt-2">
-                      <p className="text-[9px] uppercase tracking-[.15em] text-white/30">Password</p>
-                      <p className="mt-1 font-mono text-[11px] text-emerald-200">demo123</p>
+                    <div className="border-t border-white/[.06] pt-1">
+                      <p className="text-[7px] sm:text-[8.5px] uppercase tracking-[.08em] sm:tracking-[.15em] text-white/30">Password</p>
+                      <p className="mt-0 font-mono text-[8.5px] sm:text-[10px] text-emerald-200">demo123</p>
                     </div>
                   </div>
 
-                  <button type="button" disabled={authLoading} onClick={() => onDemo(demo.key)} className="group relative mt-4 flex h-10 w-full items-center justify-center gap-2 rounded-xl border border-emerald-300/20 bg-emerald-300/10 text-xs font-bold text-emerald-100 transition hover:bg-emerald-300/15 disabled:cursor-not-allowed disabled:opacity-50">
-                    Launch {demo.title.replace(' Demo', '')} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                  <button type="button" disabled={authLoading} onClick={() => onDemo(demo.key)} className="group relative mt-2 sm:mt-3 flex h-7 sm:h-9 w-full items-center justify-center gap-1 sm:gap-1.5 rounded-[8px] sm:rounded-xl border border-emerald-300/20 bg-emerald-300/10 text-[9.5px] sm:text-[11px] font-bold text-emerald-100 transition hover:bg-emerald-300/15 disabled:cursor-not-allowed disabled:opacity-50">
+                    Launch {demo.title.replace(' Demo', '')} <ArrowRight className="h-2.5 w-2.5 sm:h-3 sm:w-3 transition-transform group-hover:translate-x-1" />
                   </button>
                 </article>
               ))}
             </div>
-            <div className="mt-8 flex justify-center">
-              <button type="button" onClick={() => { setPage('portals'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-10 items-center gap-2 rounded-xl border border-emerald-300/25 bg-emerald-300/10 px-5 text-xs font-bold text-emerald-100 transition hover:bg-emerald-300/15">
-                Go with real account <ArrowRight className="h-3.5 w-3.5" />
+            <div className="mt-4 sm:mt-6 flex justify-center">
+              <button type="button" onClick={() => { setPage('portals'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-7 sm:h-9 items-center gap-1.5 rounded-lg sm:rounded-xl border border-emerald-300/25 bg-emerald-300/10 px-3 sm:px-4 text-[10px] sm:text-[11px] font-bold text-emerald-100 transition hover:bg-emerald-300/15">
+                Go with real account <ArrowRight className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
               </button>
             </div>
           </div>
@@ -2188,29 +2265,29 @@ function LandingPage({
 
         {page === 'home' && (<>
         {/* BENEFITS */}
-        <section id="benefits" className="mx-auto max-w-[1320px] px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
-          <div className="mb-10">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-300/15 bg-emerald-300/[.05] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.22em] text-emerald-200/75">
-              <ShieldCheck className="h-3.5 w-3.5" /> Benefits
+        <section id="benefits" className="mx-auto max-w-[1320px] px-3 py-6 sm:px-6 lg:px-8 lg:py-16">
+          <div className="mb-4 sm:mb-8">
+            <div className="mb-2 sm:mb-3 inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-300/15 bg-emerald-300/[.05] px-2 sm:px-2.5 py-0.5 sm:py-1 text-[8px] sm:text-[9px] font-bold uppercase tracking-[.15em] sm:tracking-[.22em] text-emerald-200/75">
+              <ShieldCheck className="h-2.5 w-2.5 sm:h-3 sm:w-3" /> Benefits
             </div>
-            <h2 className="max-w-4xl text-3xl font-semibold tracking-[-.04em] sm:text-5xl">Why <span className="text-emerald-200">United Medication</span> matters ?</h2>
-            <p className="mt-5 max-w-4xl text-sm leading-7 text-white/50 sm:text-base">
+            <h2 className="max-w-4xl text-lg font-semibold tracking-[-.04em] sm:text-4xl">Why <span className="text-emerald-200">United Medication</span> matters ?</h2>
+            <p className="mt-2 sm:mt-3 max-w-4xl text-[10.5px] leading-snug sm:leading-6 text-white/60 sm:text-sm">
               Our software creates an internationally connected digital healthcare network, bridging the gap between patients, doctors, and hospitals. It provides quick access to essential medical history during emergencies and reduces paperwork through digital records. By keeping healthcare information organized, it helps reduce medical errors and improve treatment decisions. Patients can also consult doctors online to understand their medications and receive the right guidance, anytime and anywhere. This is the only place in India where patients can get a doctor verified health report anywhere and everywhere across the globe.
             </p>
           </div>
 
-          <div className="grid gap-5 lg:grid-cols-[1.08fr_.92fr] lg:items-stretch">
-            <div className="space-y-3">
+          <div className="grid gap-3 sm:gap-4 lg:grid-cols-[1.08fr_.92fr] lg:items-stretch">
+            <div className="space-y-2 sm:space-y-2.5">
               {benefits.map((benefit, index) => (
-                <article key={benefit.number} className="group um-glass um-border relative overflow-hidden rounded-[30px] p-6 sm:p-8 transition duration-500 hover:-translate-x-1 hover:bg-white/[.075]">
-                  <div className="flex gap-4">
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-emerald-300/15 bg-emerald-300/[.07] text-emerald-200 transition group-hover:border-emerald-300/30 group-hover:bg-emerald-300/10">{benefit.icon}</div>
+                <article key={benefit.number} className="group um-glass um-border relative overflow-hidden rounded-[14px] sm:rounded-[24px] p-3 sm:p-6 transition duration-500 hover:-translate-x-1 hover:bg-white/[.075]">
+                  <div className="flex gap-2.5 sm:gap-3.5">
+                    <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-[10px] sm:rounded-[14px] border border-emerald-300/15 bg-emerald-300/[.07] text-emerald-200 transition group-hover:border-emerald-300/30 group-hover:bg-emerald-300/10">{benefit.icon}</div>
                     <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs text-emerald-300/45 sm:text-sm">{benefit.number}</span>
-                        <h3 className="text-lg font-semibold text-white sm:text-2xl">{benefit.title}</h3>
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <span className="font-mono text-[10px] text-emerald-300/45 sm:text-xs">{benefit.number}</span>
+                        <h3 className="text-sm font-semibold text-white sm:text-xl">{benefit.title}</h3>
                       </div>
-                      <p className="mt-4 text-base leading-8 text-white/60 sm:text-xl">{benefit.text}</p>
+                      <p className="mt-1 sm:mt-2.5 text-[11px] leading-relaxed sm:leading-6 text-white/60 sm:text-base">{benefit.text}</p>
                     </div>
                   </div>
                   <span className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-emerald-300/60 to-transparent transition-all duration-500 group-hover:w-full" />
@@ -2218,28 +2295,30 @@ function LandingPage({
               ))}
             </div>
 
-            <div className="um-glass um-border relative min-h-[500px] overflow-hidden rounded-[30px] lg:sticky lg:top-28 lg:h-[650px]">
+            <div className="um-glass um-border relative min-h-[260px] sm:min-h-[400px] overflow-hidden rounded-[16px] sm:rounded-[24px] lg:sticky lg:top-24 lg:h-[500px]">
               <img
-                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1400&q=85"
+                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1000&q=80"
                 alt="Connected healthcare experience"
+                loading="lazy"
+                decoding="async"
                 className="absolute inset-0 h-full w-full object-cover opacity-55"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#020b0a] via-[#020b0a]/30 to-[#020b0a]/10" />
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(52,211,153,.18),transparent_40%)]" />
 
-              <div className="absolute left-6 right-6 top-6 flex items-center justify-between">
-                <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[.18em] text-white/60 backdrop-blur-xl">Benefits / 05</div>
-                <ShieldCheck className="h-5 w-5 text-emerald-200/80" />
+              <div className="absolute left-3.5 right-3.5 top-3.5 sm:left-5 sm:right-5 sm:top-5 flex items-center justify-between">
+                <div className="rounded-full border border-white/10 bg-black/25 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[7.5px] sm:text-[8.5px] font-bold uppercase tracking-[.15em] sm:tracking-[.18em] text-white/60 backdrop-blur-xl">Benefits / 05</div>
+                <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-200/80" />
               </div>
 
-              <div className="absolute bottom-7 left-6 right-6 sm:bottom-8 sm:left-8 sm:right-8">
-                <p className="text-[10px] font-bold uppercase tracking-[.25em] text-emerald-200/65">Connected • Inclusive • Instant</p>
-                <h3 className="mt-3 text-3xl font-semibold leading-tight tracking-[-.035em] text-white sm:text-4xl">Healthcare that remembers the patient.</h3>
-                <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              <div className="absolute bottom-3.5 left-3.5 right-3.5 sm:bottom-6 sm:left-6 sm:right-6">
+                <p className="text-[7.5px] sm:text-[9px] font-bold uppercase tracking-[.18em] sm:tracking-[.25em] text-emerald-200/65">Connected • Inclusive • Instant</p>
+                <h3 className="mt-1 sm:mt-2 text-lg sm:text-3xl font-semibold leading-tight tracking-[-.035em] text-white">Healthcare that remembers the patient.</h3>
+                <div className="mt-2.5 sm:mt-4 grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2">
                   {['Digital ID', 'Voice Care', 'QR Emergency'].map((item) => (
-                    <div key={item} className="rounded-xl border border-white/10 bg-black/25 px-3 py-3 backdrop-blur-xl">
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300" />
-                      <p className="mt-2 text-[10px] font-semibold text-white/70">{item}</p>
+                    <div key={item} className="rounded-lg sm:rounded-xl border border-white/10 bg-black/25 px-2 py-1.5 sm:px-2.5 sm:py-2.5 backdrop-blur-xl">
+                      <CheckCircle2 className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-emerald-300" />
+                      <p className="mt-1 text-[8px] sm:text-[9px] font-semibold text-white/70">{item}</p>
                     </div>
                   ))}
                 </div>
@@ -2249,15 +2328,15 @@ function LandingPage({
         </section>
 
         {/* CTA */}
-        <section className="mx-auto max-w-[1320px] px-5 pb-20 sm:px-8 lg:px-10 lg:pb-28">
-          <div className="um-glass um-border relative overflow-hidden rounded-[28px] px-6 py-9 text-center sm:px-10 lg:px-16 lg:py-12">
-            <div className="absolute left-1/2 top-0 h-40 w-80 -translate-x-1/2 rounded-full bg-emerald-300/10 blur-[80px]" />
-            <Sparkles className="relative mx-auto h-6 w-6 text-emerald-200" />
-            <h2 className="relative mt-5 text-3xl font-semibold tracking-[-.035em] sm:text-5xl">Ready To Prioritize Your Health With <span className="text-emerald-200">UMIC</span></h2>
-            <p className="relative mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/80 sm:text-base">Choose your role above, sign in with your existing account, or explore the platform using one of the demo environments.</p>
-            <div className="relative mt-7 flex flex-wrap justify-center gap-3">
-              <a href="#roles" onClick={(e) => { e.preventDefault(); setPage('portals'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-11 items-center gap-2 rounded-full bg-emerald-300 px-6 text-sm font-bold text-[#032019] transition hover:bg-emerald-200">Get Started <ArrowRight className="h-4 w-4" /></a>
-              <button type="button" onClick={() => { setPage('demos'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-11 items-center gap-2 rounded-full border border-emerald-300/25 bg-emerald-300/10 px-6 text-sm font-bold text-emerald-100 transition hover:bg-emerald-300/15">Go with demo <ArrowRight className="h-4 w-4" /></button>
+        <section className="mx-auto max-w-[1320px] px-3 pb-6 sm:px-6 lg:px-8 lg:pb-16">
+          <div className="um-glass um-border relative overflow-hidden rounded-[16px] sm:rounded-[24px] px-4 py-4 text-center sm:px-8 lg:px-10 sm:py-8">
+            <div className="absolute left-1/2 top-0 h-24 w-48 sm:h-32 sm:w-64 -translate-x-1/2 rounded-full bg-emerald-300/10 blur-[50px] sm:blur-[60px]" />
+            <Sparkles className="relative mx-auto h-4 w-4 sm:h-5 sm:w-5 text-emerald-200" />
+            <h2 className="relative mt-2.5 sm:mt-4 text-lg sm:text-4xl font-semibold tracking-[-.035em]">Ready To Prioritize Your Health With <span className="text-emerald-200">UMIC</span></h2>
+            <p className="relative mx-auto mt-2 sm:mt-3 max-w-2xl text-[10.5px] sm:text-sm leading-snug sm:leading-6 text-white/80">Choose your role above, sign in with your existing account, or explore the platform using one of the demo environments.</p>
+            <div className="relative mt-3 sm:mt-5 flex flex-wrap justify-center gap-1.5 sm:gap-2.5">
+              <a href="#roles" onClick={(e) => { e.preventDefault(); setPage('portals'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-7 sm:h-10 items-center gap-1 sm:gap-1.5 rounded-full bg-emerald-300 px-3 sm:px-5 text-[9px] sm:text-xs font-bold text-[#032019] transition hover:bg-emerald-200">Get Started <ArrowRight className="h-2 w-2 sm:h-3.5 sm:w-3.5" /></a>
+              <button type="button" onClick={() => { setPage('demos'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="inline-flex h-7 sm:h-10 items-center gap-1 sm:gap-1.5 rounded-full border border-emerald-300/25 bg-emerald-300/10 px-3 sm:px-5 text-[9px] sm:text-xs font-bold text-emerald-100 transition hover:bg-emerald-300/15">Go with demo <ArrowRight className="h-2 w-2 sm:h-3.5 sm:w-3.5" /></button>
             </div>
           </div>
         </section>
@@ -2269,27 +2348,27 @@ function LandingPage({
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         title="Take me up"
-        className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-300 text-[#032019] shadow-[0_10px_30px_rgba(52,211,153,.35)] transition hover:-translate-y-1 hover:bg-emerald-200"
+        className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-40 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-emerald-300 text-[#032019] shadow-[0_10px_30px_rgba(52,211,153,.35)] transition hover:-translate-y-1 hover:bg-emerald-200"
       >
-        <ArrowUp className="h-5 w-5" strokeWidth={2.5} />
+        <ArrowUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={2.5} />
       </button>
 
       {/* Premium footer */}
       <footer id="footer" className="relative z-10 border-t border-white/[.08] bg-black/20 scroll-mt-20">
-        <div className="mx-auto flex max-w-[1320px] flex-col gap-6 px-5 py-8 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+        <div className="mx-auto flex max-w-[1320px] flex-col gap-2.5 sm:gap-4 px-3 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] sm:text-xs">
             <button type="button" onClick={onAdmin} className="font-semibold text-white/75 transition hover:text-emerald-200">Admin Login</button>
             <span className="text-white/15">•</span>
-            <a href="mailto:support@mhdhospital.in" className="inline-flex items-center gap-1.5 text-white/85 transition hover:text-emerald-200"><Headphones className="h-3.5 w-3.5" /> Support</a>
+            <a href="mailto:support@mhdhospital.in" className="inline-flex items-center gap-1 text-white/85 transition hover:text-emerald-200"><Headphones className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Support</a>
             <span className="text-white/15">•</span>
             <button type="button" onClick={onPrivacy} className="text-white/85 transition hover:text-emerald-200">Privacy Policy</button>
           </div>
-          <div className="flex items-center gap-2 text-sm text-white/85 lg:text-right">
-            <Mail className="h-4 w-4 text-emerald-200/70" />
+          <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-white/85 lg:text-right">
+            <Mail className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-200/70" />
             <a href="mailto:unitedmadication@gmail.com" className="transition hover:text-emerald-200">unitedmadication@gmail.com</a>
           </div>
         </div>
-        <div className="border-t border-white/[.05] px-5 py-4 text-center text-[10px] uppercase tracking-[.18em] text-white/25">
+        <div className="border-t border-white/[.05] px-3 py-2 sm:py-3 text-center text-[8px] sm:text-[9px] uppercase tracking-[.14em] sm:tracking-[.18em] text-white/30">
           © {new Date().getFullYear()} United Medication in Cooperation • Secure Digital Healthcare Ecosystem
         </div>
       </footer>

@@ -9,16 +9,16 @@ export const labelCls = 'block text-xs font-bold text-[#1e3a8a] uppercase tracki
 
 export function PageHeader({ title, sub }: { title: string; sub: string }) {
   return (
-    <div className="mb-6">
-      <h2 className="text-2xl font-bold text-ink tracking-tight mb-1">{title}</h2>
-      <p className="text-xs sm:text-sm text-muted">{sub}</p>
+    <div className="mb-3 sm:mb-6 min-w-0">
+      <h2 className="text-xl sm:text-2xl font-bold text-ink tracking-tight mb-0.5 sm:mb-1 truncate">{title}</h2>
+      <p className="text-[11px] sm:text-sm text-muted break-words">{sub}</p>
     </div>
   );
 }
 
 export function Loading() {
   return (
-    <div className="bg-surface border border-line rounded-2xl p-8 text-center shadow-xs">
+    <div className="bg-surface border border-line rounded-xl sm:rounded-2xl p-6 sm:p-8 text-center shadow-xs">
       <Loader inline />
       <p className="text-xs font-medium text-muted mt-2">Loading feature data…</p>
     </div>
@@ -27,11 +27,11 @@ export function Loading() {
 
 export function EmptyState({ icon, title, sub }: { icon: ReactNode; title: string; sub: string }) {
   return (
-    <div className="bg-surface border border-line rounded-2xl p-10 text-center shadow-xs">
-      <div className="w-12 h-12 rounded-2xl bg-app border border-line flex items-center justify-center text-primary mx-auto mb-3">
+    <div className="bg-surface border border-line rounded-xl sm:rounded-2xl p-6 sm:p-10 text-center shadow-xs">
+      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-app border border-line flex items-center justify-center text-primary mx-auto mb-2.5 sm:mb-3">
         {icon}
       </div>
-      <p className="text-base font-bold text-ink">{title}</p>
+      <p className="text-sm sm:text-base font-bold text-ink">{title}</p>
       <p className="text-xs sm:text-sm text-muted mt-1 max-w-sm mx-auto">{sub}</p>
     </div>
   );
@@ -44,7 +44,7 @@ export function StatusChip({ ok, warn, danger, children }: { ok?: boolean; warn?
       ? 'text-danger bg-danger-bg/90 border-danger-bd/40'
       : 'text-amber-700 dark:text-amber-300 bg-amber-500/10 border-amber-500/30';
   return (
-    <span className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border shadow-xs ${cls}`}>
+    <span className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border shadow-xs whitespace-nowrap ${cls}`}>
       {children}
     </span>
   );
@@ -52,12 +52,12 @@ export function StatusChip({ ok, warn, danger, children }: { ok?: boolean; warn?
 
 export function FilterPills({ filters, value, onChange }: { filters: string[]; value: string; onChange: (v: string) => void }) {
   return (
-    <div className="flex gap-2 border-b border-line pb-4 overflow-x-auto custom-scrollbar">
+    <div className="flex gap-1.5 sm:gap-2 border-b border-line pb-2.5 sm:pb-4 overflow-x-auto custom-scrollbar">
       {filters.map((f, i) => (
         <button
           key={`${f}-${i}`}
           onClick={() => onChange(f)}
-          className={`shrink-0 text-xs font-semibold px-4 py-2 rounded-xl border transition-all ${
+          className={`shrink-0 text-[11px] sm:text-xs font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border transition-all ${
             value === f
               ? 'bg-primary text-white border-primary shadow-sm'
               : 'bg-surface border-line text-muted hover:text-ink hover:bg-app'

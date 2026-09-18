@@ -86,6 +86,7 @@ export default function PatientDashboard({ onLogout }: { onLogout: () => void })
     [t('dashboard'), LayoutDashboard],
     ['Activity', Flame],
     [t('upcoming'), CalendarClock],
+    [t('timeline'), History],
     [t('mycase'), FileText],
     [t('meds'), Pill],
     [t('results'), ListChecks],
@@ -107,24 +108,25 @@ export default function PatientDashboard({ onLogout }: { onLogout: () => void })
   }
 
   const renderSidebar = () => (
-    <aside className="portal-dark-sidebar w-[270px] bg-white flex flex-col h-full shrink-0 border-r border-slate-200">
-      <div className="h-[64px] flex items-center justify-between px-6 border-b border-slate-200 shrink-0">
-        <div className="flex items-center gap-3">
+    <aside className="portal-dark-sidebar w-[245px] sm:w-[270px] max-w-[85vw] bg-white flex flex-col h-full shrink-0 border-r border-slate-200">
+      <div className="h-[48px] sm:h-[64px] flex items-center justify-between px-3 sm:px-6 border-b border-slate-200 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <Logo />
-          <div>
-            <h1 className="text-[15px] font-bold tracking-tight text-[#1e3a8a] leading-none">UNITED MEDICATION</h1>
-            <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold mt-1">Patient Portal</p>
+          <div className="min-w-0">
+            <h1 className="text-[12px] sm:text-[15px] font-bold tracking-tight text-[#1e3a8a] leading-none truncate">UNITED MEDICATION</h1>
+            <p className="text-[8.5px] sm:text-[10px] text-slate-500 uppercase tracking-wider font-semibold mt-0.5 sm:mt-1 truncate">Patient Portal</p>
           </div>
         </div>
         <button
           onClick={() => setMobileMenuOpen(false)}
-          className="lg:hidden p-1 rounded-md text-slate-400 hover:text-slate-700"
+          className="lg:hidden p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+          aria-label="Close menu"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-3 py-4 custom-scrollbar space-y-1">
+      <div className="flex-1 overflow-y-auto px-2 sm:px-3 py-2 sm:py-4 custom-scrollbar space-y-0.5 sm:space-y-1">
         {NAV.map(([label, Icon], i) => {
           const isActive = activeTab === label;
           return (
@@ -134,50 +136,53 @@ export default function PatientDashboard({ onLogout }: { onLogout: () => void })
                 setActiveTab(label);
                 setMobileMenuOpen(false);
               }}
-              className={`relative w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all ${isActive
+              className={`relative w-full flex items-center gap-2.5 sm:gap-3 px-2.5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[12px] sm:text-[13px] font-medium transition-all ${isActive
                   ? 'bg-[#2a8eff] text-white font-semibold shadow-md shadow-[#2a8eff]/30'
                   : 'bg-white text-[#2a8eff] hover:bg-[#2a8eff] hover:text-white'
                 }`}
             >
-              <Icon className={`w-4 h-4 shrink-0 relative z-10 ${isActive ? 'text-white' : 'text-[#2a8eff]'}`} strokeWidth={1.5} />
+              <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 relative z-10 ${isActive ? 'text-white' : 'text-[#2a8eff]'}`} strokeWidth={1.5} />
               <span className={`truncate relative z-10 ${isActive ? 'text-white font-semibold' : 'text-[#2a8eff] font-medium'}`}>{label}</span>
             </button>
           );
         })}
 
-        <div className="pt-2">
+        <div className="pt-1.5 sm:pt-2">
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setEmOpen(true)}
-            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-bold bg-red-500 text-white hover:bg-red-600 transition-colors border border-red-500 shadow-sm"
+            onClick={() => {
+              setEmOpen(true);
+              setMobileMenuOpen(false);
+            }}
+            className="w-full flex items-center gap-2.5 sm:gap-3 px-2.5 py-1.5 sm:py-2.5 rounded-lg sm:rounded-xl text-[12px] sm:text-[13px] font-bold bg-red-500 text-white hover:bg-red-600 transition-colors border border-red-500 shadow-sm"
           >
-            <AlertCircle className="w-4 h-4 shrink-0 animate-pulse text-white" style={{ color: '#ffffff' }} strokeWidth={1.5} />
+            <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 animate-pulse text-white" style={{ color: '#ffffff' }} strokeWidth={1.5} />
             <span className="text-white font-bold" style={{ color: '#ffffff' }}>{t('emergencyBtn')}</span>
           </motion.button>
         </div>
       </div>
 
-      <div className="p-4 border-t border-slate-200 space-y-2 shrink-0">
-        <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-50 border border-slate-200">
+      <div className="p-2 sm:p-4 border-t border-slate-200 space-y-1.5 sm:space-y-2 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-slate-50 border border-slate-200">
           {me.photo ? (
-            <img src={me.photo} alt="" className="w-9 h-9 rounded-full object-cover ring-2 ring-primary/40" />
+            <img src={me.photo} loading="lazy" decoding="async" alt="" className="w-7 h-7 sm:w-9 sm:h-9 rounded-full object-cover ring-2 ring-primary/40" />
           ) : (
-            <div className="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center">
-              <UserCircle className="w-5 h-5 text-[#2a8eff]" strokeWidth={1.5} />
+            <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-slate-200 flex items-center justify-center">
+              <UserCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#2a8eff]" strokeWidth={1.5} />
             </div>
           )}
           <div className="min-w-0 flex-1">
-            <p className="text-[13px] font-semibold text-[#1e3a8a] truncate">{me.name}</p>
-            <p className="text-[11px] text-slate-500 font-mono truncate">{me.healthId}</p>
+            <p className="text-[11px] sm:text-[13px] font-semibold text-[#1e3a8a] truncate">{me.name}</p>
+            <p className="text-[9px] sm:text-[11px] text-slate-500 font-mono truncate">{me.healthId}</p>
           </div>
         </div>
 
         <button
           onClick={doLogout}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-[12px] font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors border border-red-500 shadow-sm"
+          className="w-full flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[11px] sm:text-[12px] font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors border border-red-500 shadow-sm"
         >
-          <LogOut className="w-3.5 h-3.5 text-white" style={{ color: '#ffffff' }} strokeWidth={1.5} />
+          <LogOut className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" style={{ color: '#ffffff' }} strokeWidth={1.5} />
           <span className="text-white font-bold" style={{ color: '#ffffff' }}>{t('logout')}</span>
         </button>
       </div>
@@ -185,7 +190,7 @@ export default function PatientDashboard({ onLogout }: { onLogout: () => void })
   );
 
   return (
-    <div className="dashboard-shell flex h-screen bg-white font-sans text-[#1e3a8a] overflow-hidden">
+    <div className="dashboard-shell min-h-screen lg:h-screen lg:overflow-hidden flex flex-col lg:flex-row bg-white font-sans text-[#1e3a8a]">
       <style>{`
         .dashboard-shell {
           --mhd-primary: #2a8eff;
@@ -326,36 +331,39 @@ export default function PatientDashboard({ onLogout }: { onLogout: () => void })
         }
       `}</style>
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block h-full">{renderSidebar()}</div>
+      <div className="hidden lg:block h-full shrink-0">{renderSidebar()}</div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[80] flex lg:hidden bg-slate-950/50 backdrop-blur-sm animate-in fade-in">
-          {renderSidebar()}
-          <div className="flex-1" onClick={() => setMobileMenuOpen(false)} />
+        <div className="fixed inset-0 z-[80] flex lg:hidden bg-slate-950/60 backdrop-blur-xs animate-in fade-in">
+          <div className="h-full shadow-2xl animate-in slide-in-from-left duration-200">
+            {renderSidebar()}
+          </div>
+          <div className="flex-1 cursor-pointer" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu" />
         </div>
       )}
 
-      <div className="flex-1 flex flex-col h-full overflow-hidden min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 lg:h-full lg:overflow-hidden">
         {/* Header */}
-        <header className="h-[64px] bg-white border-b border-line flex items-center justify-between px-4 sm:px-8 shrink-0">
-          <div className="flex items-center gap-3 min-w-0">
+        <header className="sticky top-0 z-30 h-[46px] sm:h-[64px] bg-white border-b border-line flex items-center justify-between px-2 sm:px-6 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-2 rounded-lg text-muted hover:bg-app"
+              className="lg:hidden p-1 sm:p-2 rounded-lg text-muted hover:bg-slate-100 hover:text-ink transition-colors"
+              aria-label="Open menu"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4 h-4 sm:w-5 sm:h-5 text-[#1e3a8a]" />
             </button>
 
-            {/* Breadcrumb */}
-            <div className="hidden sm:flex items-center gap-2 text-[13px] text-muted font-medium truncate">
-              <span>Patient Portal</span>
-              <ChevronRight className="w-3.5 h-3.5 text-muted/60" />
-              <span className="text-ink font-semibold truncate">{activeTab}</span>
+            {/* Breadcrumb / Tab Label */}
+            <div className="flex items-center gap-1.5 text-[11px] sm:text-[13px] text-muted font-medium truncate">
+              <span className="hidden sm:inline">Patient Portal</span>
+              <ChevronRight className="hidden sm:inline w-3.5 h-3.5 text-muted/60" />
+              <span className="text-ink font-bold truncate max-w-[105px] sm:max-w-none">{activeTab}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-0.5 sm:gap-2 shrink-0">
             {/* Quick Search Button */}
             <button
               onClick={() => setSearchOpen(true)}
@@ -368,18 +376,20 @@ export default function PatientDashboard({ onLogout }: { onLogout: () => void })
               </kbd>
             </button>
 
-            <button onClick={() => setActiveTab(t('dashboard'))} title="Home" className="p-2 rounded-lg bg-white border border-line text-[#1e3a8a] hover:bg-slate-100"><Home className="w-4 h-4 text-[#1e3a8a]" /></button>
-            <button onClick={() => window.history.back()} title="Back" className="p-2 rounded-lg bg-white border border-line text-[#1e3a8a] hover:bg-slate-100"><ArrowLeft className="w-4 h-4 text-[#1e3a8a]" /></button>
-            <button onClick={() => window.location.reload()} title="Refresh portal" className="p-2 rounded-lg bg-white border border-line text-[#1e3a8a] hover:bg-slate-100"><RefreshCw className="w-4 h-4 text-[#1e3a8a]" /></button>
+            <button onClick={() => setActiveTab(t('dashboard'))} title="Home" className="p-1 sm:p-2 rounded-lg bg-white border border-line text-[#1e3a8a] hover:bg-slate-100 transition-colors"><Home className="w-3 h-3 sm:w-4 sm:h-4 text-[#1e3a8a]" /></button>
+            <button onClick={() => window.history.back()} title="Back" className="p-1 sm:p-2 rounded-lg bg-white border border-line text-[#1e3a8a] hover:bg-slate-100 transition-colors"><ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 text-[#1e3a8a]" /></button>
+            <button onClick={() => window.location.reload()} title="Refresh portal" className="hidden sm:flex p-1.5 sm:p-2 rounded-lg bg-white border border-line text-[#1e3a8a] hover:bg-slate-100 transition-colors"><RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1e3a8a]" /></button>
 
-            <LangSelect />
-            <ThemeSelect insidePortal />
+            <div className="scale-80 sm:scale-100 origin-right flex items-center gap-0.5 sm:gap-1">
+              <LangSelect />
+              <ThemeSelect insidePortal />
+            </div>
             <NotificationBell onOpen={() => setActiveTab(t('notifs'))} />
           </div>
         </header>
 
         {/* Main Workspace */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 custom-scrollbar relative">
+        <main className="flex-1 lg:overflow-y-auto p-2 sm:p-5 lg:p-8 custom-scrollbar relative min-w-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}

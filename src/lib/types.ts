@@ -119,6 +119,10 @@ export interface CaseDoc {
   tests?: string;
   followupDays?: string;
   sharedWithPatient?: boolean;
+  title?: string;
+  hospital?: string;
+  summary?: string;
+  notes?: string;
   [key: string]: unknown;
 }
 
@@ -132,6 +136,8 @@ export interface TimelineEntry {
   description: string;
   createdAt: number;
   due?: string;
+  note?: string;
+  doctorName?: string;
   [key: string]: unknown;
 }
 
@@ -145,7 +151,9 @@ export interface ReportDoc {
   date: string;
   hospital?: string;
   doctor?: string;
+  doctorName?: string;
   note?: string;
+  summary?: string;
   verified: boolean;
   uploadedBy?: string;
   uploadedByRole?: string;
@@ -165,10 +173,13 @@ export interface VitalsDoc {
   bp: string;
   hr: string;
   wt: string;
+  spo2?: string;
   sym?: string;
   enteredBy: string;
   doctorId?: string;
   doctorName?: string;
+  hospital?: string;
+  notes?: string;
   createdAt: number;
   [key: string]: unknown;
 }

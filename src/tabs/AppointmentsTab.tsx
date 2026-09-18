@@ -120,21 +120,21 @@ export default function AppointmentsTab({ patientData }: { patientData: MhdUser 
     } catch { toast('Could not cancel', 'err'); }
   };
 
-  if (appts === null) return <div className="max-w-[1000px] mx-auto space-y-6"><Loading /></div>;
+  if (appts === null) return <div className="max-w-[1000px] mx-auto space-y-4 sm:space-y-6 min-w-0 w-full"><Loading /></div>;
 
   const list = [...appts].sort((a, b) => b.createdAt - a.createdAt)
     .filter((a) => tab === 'All' || a.status === tab.toLowerCase());
   const booked = appts.filter((a) => a.doctorId === f.doctorId && a.date === f.date && a.status === 'upcoming').map((a) => a.time);
 
   return (
-    <div className="max-w-[1000px] mx-auto space-y-6 pb-12">
+    <div className="max-w-[1000px] mx-auto space-y-4 sm:space-y-6 pb-8 sm:pb-12 min-w-0 w-full">
       <PageHeader title="Appointments" sub="Book a doctor, pick a slot, and track your visits." />
 
       {/* Booking */}
-      <div className="bg-white border border-line rounded-2xl p-6 shadow-xs space-y-5 text-[#1e3a8a]">
-        <div className="flex items-center gap-3 pb-1">
-          <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-primary"><Calendar className="w-5 h-5" /></div>
-          <div><h4 className="text-[15px] font-semibold text-[#1e3a8a]">Book an appointment</h4><p className="text-[12px] text-slate-500 mt-0.5">Select a hospital, choose a doctor, date, and visit type.</p></div>
+      <div className="bg-white border border-line rounded-xl sm:rounded-2xl p-3.5 sm:p-6 shadow-xs space-y-4 sm:space-y-5 text-[#1e3a8a] min-w-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 pb-1">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-50 flex items-center justify-center text-primary shrink-0"><Calendar className="w-4 h-4 sm:w-5 sm:h-5" /></div>
+          <div className="min-w-0"><h4 className="text-sm sm:text-[15px] font-semibold text-[#1e3a8a] truncate">Book an appointment</h4><p className="text-[11px] sm:text-[12px] text-slate-500 mt-0.5 truncate">Select a hospital, choose a doctor, date, and visit type.</p></div>
         </div>
 
         {/* Select Hospital dropdown above Doctor field */}
@@ -149,7 +149,7 @@ export default function AppointmentsTab({ patientData }: { patientData: MhdUser 
               setF((prev) => ({ ...prev, doctorId: '' }));
               setSelectedTime('');
             }}
-            className={inputCls}
+            className={inputCls + ' text-xs sm:text-sm'}
           >
             <option value="">Select a hospital…</option>
             {hospitals.map((h, i) => (
@@ -160,8 +160,8 @@ export default function AppointmentsTab({ patientData }: { patientData: MhdUser 
           </select>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-3">
-          <div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+          <div className="min-w-0">
             <label className={labelCls}>Doctor</label>
             <select
               id="appointment-select-doctor"
@@ -171,7 +171,7 @@ export default function AppointmentsTab({ patientData }: { patientData: MhdUser 
                 setSelectedTime('');
               }}
               disabled={!selectedHospital}
-              className={inputCls + (!selectedHospital ? ' opacity-60 cursor-not-allowed' : '')}
+              className={inputCls + ' text-xs sm:text-sm' + (!selectedHospital ? ' opacity-60 cursor-not-allowed' : '')}
             >
               {!selectedHospital ? (
                 <option value="">Select hospital first…</option>
@@ -189,7 +189,7 @@ export default function AppointmentsTab({ patientData }: { patientData: MhdUser 
               )}
             </select>
           </div>
-          <div>
+          <div className="min-w-0">
             <label className={labelCls}>Date</label>
             <input
               type="date"
@@ -199,15 +199,15 @@ export default function AppointmentsTab({ patientData }: { patientData: MhdUser 
                 setF({ ...f, date: e.target.value });
                 setSelectedTime('');
               }}
-              className={inputCls}
+              className={inputCls + ' text-xs sm:text-sm'}
             />
           </div>
-          <div>
+          <div className="min-w-0">
             <label className={labelCls}>Type</label>
             <select
               value={f.type}
               onChange={(e) => setF({ ...f, type: e.target.value })}
-              className={inputCls}
+              className={inputCls + ' text-xs sm:text-sm'}
             >
               {TYPES.map((ty, i) => (
                 <option key={`${ty}-${i}`}>{ty}</option>
@@ -215,24 +215,28 @@ export default function AppointmentsTab({ patientData }: { patientData: MhdUser 
             </select>
           </div>
         </div>
-        <div><label className={labelCls}>Reason (optional)</label><input value={f.reason} onChange={(e) => setF({ ...f, reason: e.target.value })} className={inputCls} /></div>
+        <div><label className={labelCls}>Reason (optional)</label><input value={f.reason} onChange={(e) => setF({ ...f, reason: e.target.value })} className={inputCls + ' text-xs sm:text-sm'} placeholder="e.g. Regular follow-up" /></div>
         {doctor && (
           <div>
             <label className={labelCls}>Available slots — {fmtD(f.date)}</label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {SLOT_TIMES.map((tm, i) => {
                 const isBooked = booked.includes(tm);
                 return (
                   <button key={`${tm}-${i}`} disabled={isBooked || busy}
                     onClick={() => setSelectedTime(tm)}
-                    className={`text-[12px] font-medium px-3 py-2 rounded-[4px] border transition-colors ${
+                    className={`text-[11px] sm:text-[12px] font-medium px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-[4px] border transition-colors ${
                       isBooked ? 'bg-app border-line text-muted cursor-not-allowed' : selectedTime === tm ? 'bg-primary text-on-navy border-primary' : 'border-primary text-primary hover:bg-active'}`}>
                     {isBooked ? <Lock className="w-3 h-3 inline mr-1" /> : null}{tm}
                   </button>
                 );
               })}
             </div>
-            {selectedTime && !booked.includes(selectedTime) && <button type="button" disabled={busy} onClick={() => book(selectedTime)} className={btnPrimary + ' mt-3 disabled:opacity-60'}>{busy ? 'Booking…' : 'Confirm & Book Appointment'}</button>}
+            {selectedTime && !booked.includes(selectedTime) && (
+              <button type="button" disabled={busy} onClick={() => book(selectedTime)} className={btnPrimary + ' w-full sm:w-auto mt-3 disabled:opacity-60 text-xs sm:text-sm py-2 sm:py-2.5'}>
+                {busy ? 'Booking…' : 'Confirm & Book Appointment'}
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -242,19 +246,19 @@ export default function AppointmentsTab({ patientData }: { patientData: MhdUser 
       {list.length === 0 ? (
         <EmptyState icon={<Calendar className="w-8 h-8 text-ghost mx-auto" strokeWidth={1.5} />} title={`No ${tab.toLowerCase()} appointments`} sub="Book one above." />
       ) : (
-        <div className="bg-surface border border-line rounded-2xl shadow-[0_6px_24px_rgba(16,42,67,0.06)] overflow-hidden">
+        <div className="bg-surface border border-line rounded-xl sm:rounded-2xl shadow-[0_6px_24px_rgba(16,42,67,0.06)] overflow-hidden">
           <div className="divide-y divide-line">
             {list.map((a, i) => (
-              <div key={`${a.id}-${i}`} className="flex items-center justify-between px-4 py-3 hover:bg-stripe transition-colors">
-                <div>
-                  <p className="text-[13px] font-semibold text-ink">{a.doctorName} <span className="text-muted font-normal">· {a.type}</span></p>
-                  <p className="text-[12px] text-muted mt-0.5">{fmtD(a.date)} · {a.time} · {a.hospital || '—'}{a.reason ? ` · ${a.reason}` : ''}</p>
+              <div key={`${a.id}-${i}`} className="flex flex-col sm:flex-row sm:items-center justify-between px-3.5 sm:px-4 py-2.5 sm:py-3 hover:bg-stripe transition-colors gap-2 min-w-0">
+                <div className="min-w-0">
+                  <p className="text-xs sm:text-[13px] font-semibold text-ink truncate">{a.doctorName} <span className="text-muted font-normal">· {a.type}</span></p>
+                  <p className="text-[11px] sm:text-[12px] text-muted mt-0.5">{fmtD(a.date)} · {a.time} · {a.hospital || '—'}{a.reason ? ` · ${a.reason}` : ''}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  {a.status === 'upcoming' && <span className="text-[11px] font-bold text-primary border border-primary rounded-[4px] px-2 py-0.5">#{queueNumberOf(appts, a)}</span>}
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  {a.status === 'upcoming' && <span className="text-[10px] sm:text-[11px] font-bold text-primary border border-primary rounded-[4px] px-2 py-0.5">#{queueNumberOf(appts, a)}</span>}
                   <StatusChip ok={a.status === 'completed'} warn={a.status === 'upcoming'} danger={a.status === 'cancelled'}>{a.status}</StatusChip>
                   {a.status === 'upcoming' && (
-                    <button onClick={() => cancel(a)} className="text-[12px] font-medium text-danger border border-danger-bd px-3 py-1.5 rounded-[4px] hover:bg-danger-bg transition-colors">Cancel</button>
+                    <button onClick={() => cancel(a)} className="text-[11px] sm:text-[12px] font-medium text-danger border border-danger-bd px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-[4px] hover:bg-danger-bg transition-colors">Cancel</button>
                   )}
                 </div>
               </div>

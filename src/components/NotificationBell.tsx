@@ -27,5 +27,5 @@ export default function NotificationBell({ onOpen }: { onOpen: () => void }) {
     });
     return () => { cancelled = true; stopNotifications?.(); stopAuth(); };
   }, []);
-  return <button onClick={onOpen} title="Notifications" className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border border-line bg-surface text-muted hover:text-primary hover:border-primary transition-colors"><Bell className="w-5 h-5" strokeWidth={1.5} />{unread > 0 && <span className="absolute -right-1 -top-1 min-w-5 h-5 px-1 rounded-full bg-danger text-white text-[10px] font-bold flex items-center justify-center">{unread > 99 ? '99+' : unread}</span>}</button>;
+  return <button onClick={onOpen} title="Notifications" className="relative inline-flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-md border border-line bg-surface text-muted hover:text-primary hover:border-primary transition-colors"><Bell className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.5} />{unread > 0 && <span className="absolute -right-1 -top-1 min-w-4 h-4 sm:min-w-5 sm:h-5 px-1 rounded-full bg-danger text-white text-[9px] sm:text-[10px] font-bold flex items-center justify-center">{unread > 99 ? '99+' : unread}</span>}</button>;
 }

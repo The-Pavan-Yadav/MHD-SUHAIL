@@ -46,22 +46,22 @@ export default function MedicinesTab({ patientData }: { patientData: MhdUser }) 
     } catch { toast('Could not update', 'err'); }
   };
 
-  if (meds === null) return <div className="max-w-[1000px] mx-auto"><Loading /></div>;
+  if (meds === null) return <div className="max-w-[1000px] mx-auto min-w-0 w-full"><Loading /></div>;
 
   const list = [...meds].sort((a, b) => b.createdAt - a.createdAt).filter((m) =>
     filter === 'All' ? true : filter === 'Active' ? m.active !== false : m.active === false);
 
   return (
-    <div className="max-w-[1000px] mx-auto space-y-6 pb-12">
+    <div className="max-w-[1000px] mx-auto space-y-4 sm:space-y-6 pb-8 sm:pb-12 min-w-0 w-full">
       <PageHeader title="Medicines" sub="Self-report medicines; a doctor verifies them. Track what you take each day." />
 
-      <form onSubmit={add} className="bg-surface border border-line rounded-[4px] p-5 shadow-sm grid sm:grid-cols-4 gap-3 items-end">
-        <div><label className={labelCls}>Medicine name *</label><input value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} className={inputCls} placeholder="e.g. Metformin 500mg" /></div>
-        <div><label className={labelCls}>Dosage / when</label><input value={f.dosage} onChange={(e) => setF({ ...f, dosage: e.target.value })} className={inputCls} placeholder="1 tablet after breakfast" /></div>
-        <div><label className={labelCls}>Start date</label><input type="date" value={f.startDate} onChange={(e) => setF({ ...f, startDate: e.target.value })} className={inputCls} /></div>
-        <div className="flex gap-2 items-end">
-          <div className="flex-1"><label className={labelCls}>Days</label><input value={f.durationDays} onChange={(e) => setF({ ...f, durationDays: e.target.value })} className={inputCls} placeholder="e.g. 30" /></div>
-          <button type="submit" disabled={busy} className={btnPrimary + ' flex items-center gap-1.5 disabled:opacity-70'}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : ''} Add</button>
+      <form onSubmit={add} className="bg-surface border border-line rounded-xl sm:rounded-[4px] p-3.5 sm:p-5 shadow-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 items-end min-w-0">
+        <div className="min-w-0"><label className={labelCls}>Medicine name *</label><input value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} className={inputCls + ' text-xs sm:text-sm'} placeholder="e.g. Metformin 500mg" /></div>
+        <div className="min-w-0"><label className={labelCls}>Dosage / when</label><input value={f.dosage} onChange={(e) => setF({ ...f, dosage: e.target.value })} className={inputCls + ' text-xs sm:text-sm'} placeholder="1 tablet after breakfast" /></div>
+        <div className="min-w-0"><label className={labelCls}>Start date</label><input type="date" value={f.startDate} onChange={(e) => setF({ ...f, startDate: e.target.value })} className={inputCls + ' text-xs sm:text-sm'} /></div>
+        <div className="flex gap-2 items-end min-w-0">
+          <div className="flex-1 min-w-0"><label className={labelCls}>Days</label><input value={f.durationDays} onChange={(e) => setF({ ...f, durationDays: e.target.value })} className={inputCls + ' text-xs sm:text-sm'} placeholder="e.g. 30" /></div>
+          <button type="submit" disabled={busy} className={btnPrimary + ' flex items-center justify-center gap-1.5 disabled:opacity-70 px-3.5 py-2 text-xs sm:text-sm shrink-0'}>{busy ? <Loader2 className="w-4 h-4 animate-spin" /> : ''} Add</button>
         </div>
       </form>
 
@@ -70,24 +70,24 @@ export default function MedicinesTab({ patientData }: { patientData: MhdUser }) 
       {list.length === 0 ? (
         <EmptyState icon={<Pill className="w-8 h-8 text-ghost mx-auto" strokeWidth={1.5} />} title="No medicines here" sub="Add one above — a doctor will verify it." />
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2.5 sm:space-y-3">
           {list.map((m, i) => {
             const taken = !!(m.takenDates && m.takenDates[todayStr()]);
             return (
-              <div key={`${m.id}-${i}`} className="bg-surface border border-line rounded-[4px] p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <p className="text-[14px] font-semibold text-ink">{m.name} {taken && <span className="text-[12px] text-ok font-medium">· taken today</span>}</p>
-                  <p className="text-[12px] text-muted mt-0.5">
+              <div key={`${m.id}-${i}`} className="bg-surface border border-line rounded-xl sm:rounded-[4px] p-3.5 sm:p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 min-w-0">
+                <div className="min-w-0">
+                  <p className="text-xs sm:text-[14px] font-semibold text-ink truncate">{m.name} {taken && <span className="text-[11px] sm:text-[12px] text-ok font-medium">· taken today</span>}</p>
+                  <p className="text-[11px] sm:text-[12px] text-muted mt-0.5">
                     {m.dosage || '—'} ·{schedTimeFromDosage(m.dosage || '')} · started {fmtD(m.startDate)}
                     {m.durationDays ? ` · ${m.durationDays} days` : ''} · by {m.prescribedBy || '—'}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
                   <StatusChip ok={m.verified} warn={!m.verified}>{m.verified ? `Verified${m.verifiedBy ? ` · ${m.verifiedBy}` : ''}` : 'Pending'}</StatusChip>
                   {m.active !== false && !taken && (
-                    <button onClick={() => markTaken(m)} className="text-[12px] font-medium text-ok border border-ok-bd px-3 py-1.5 rounded-[4px] hover:bg-ok-bg transition-colors">Mark Taken</button>
+                    <button onClick={() => markTaken(m)} className="text-[11px] sm:text-[12px] font-medium text-ok border border-ok-bd px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-[4px] hover:bg-ok-bg transition-colors">Mark Taken</button>
                   )}
-                  <button onClick={() => toggleActive(m)} className="text-[12px] font-medium text-muted border border-line px-3 py-1.5 rounded-[4px] hover:bg-app transition-colors">
+                  <button onClick={() => toggleActive(m)} className="text-[11px] sm:text-[12px] font-medium text-muted border border-line px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-[4px] hover:bg-app transition-colors">
                     {m.active === false ? '▶ Restart' : 'Stop'}
                   </button>
                 </div>

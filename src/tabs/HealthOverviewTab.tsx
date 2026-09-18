@@ -22,7 +22,7 @@ export default function HealthOverviewTab({ patientData }: { patientData: MhdUse
 
   useEffect(() => bind<VitalsDoc>('vitals', [['patientId', '==', patientData.id]], setVitals), [patientData.id]);
 
-  if (vitals === null) return <div className="max-w-[1000px] mx-auto"><Loading /></div>;
+  if (vitals === null) return <div className="max-w-[1000px] mx-auto min-w-0 w-full"><Loading /></div>;
 
   const sorted = [...vitals].sort((a, b) => b.createdAt - a.createdAt);
   const latest = sorted[0];
@@ -33,22 +33,24 @@ export default function HealthOverviewTab({ patientData }: { patientData: MhdUse
   const dia = latest?.bp ? num(latest.bp.split('/')[1]) : null;
 
   const metric = (label: string, unit: string, val: string | number | null, series: (number | null)[]) => (
-    <div className="bg-surface border border-line rounded-[4px] p-4 shadow-sm">
-      <p className="text-[11px] font-bold text-muted uppercase tracking-wider">{label}</p>
-      <p className="text-[24px] font-bold text-heading leading-tight mt-1">{val ?? '—'} <span className="text-[12px] text-muted font-normal">{unit}</span></p>
-      <Spark values={series.filter((v): v is number => v != null)} />
+    <div className="bg-surface border border-line rounded-xl sm:rounded-[4px] p-3 sm:p-4 shadow-sm min-w-0">
+      <p className="text-[10px] sm:text-[11px] font-bold text-muted uppercase tracking-wider truncate">{label}</p>
+      <p className="text-lg sm:text-[24px] font-bold text-heading leading-tight mt-1 truncate">{val ?? '—'} <span className="text-[11px] sm:text-[12px] text-muted font-normal">{unit}</span></p>
+      <div className="mt-1">
+        <Spark values={series.filter((v): v is number => v != null)} />
+      </div>
     </div>
   );
 
   return (
-    <div className="max-w-[1000px] mx-auto space-y-6 pb-12">
+    <div className="max-w-[1000px] mx-auto space-y-4 sm:space-y-6 pb-8 sm:pb-12 min-w-0 w-full">
       <PageHeader title="Health Overview" sub="Vitals recorded by your doctors, with trends." />
 
       {sorted.length === 0 ? (
         <EmptyState icon={<Activity className="w-8 h-8 text-ghost mx-auto" strokeWidth={1.5} />} title="No vitals recorded yet" sub="When a doctor records your vitals they will show up here." />
       ) : (
         <>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
             {metric('Blood Pressure', 'mmHg', sys != null && dia != null ? sys + '/' + dia : null, last7.map((v) => num(v.bp?.split('/')[0])))}
             {metric('Temperature', '°F', num(latest?.temp), last7.map((v) => num(v.temp)))}
             {metric('Heart Rate', 'bpm', num(latest?.hr), last7.map((v) => num(v.hr)))}
@@ -56,37 +58,39 @@ export default function HealthOverviewTab({ patientData }: { patientData: MhdUse
           </div>
 
           {latest?.sym && (
-            <div className="bg-surface border-l-4 border-primary border-y border-r border-y-line border-r-line rounded-[4px] p-4">
-              <p className="text-[11px] font-bold text-muted uppercase tracking-wider mb-1">Latest symptoms noted</p>
-              <p className="text-[13px] text-ink">{latest.sym}</p>
-              <p className="text-[11px] text-muted mt-1">by {latest.doctorName} · {fmtDT(latest.createdAt)}</p>
+            <div className="bg-surface border-l-4 border-primary border-y border-r border-y-line border-r-line rounded-xl sm:rounded-[4px] p-3.5 sm:p-4 min-w-0">
+              <p className="text-[10px] sm:text-[11px] font-bold text-muted uppercase tracking-wider mb-1">Latest symptoms noted</p>
+              <p className="text-xs sm:text-[13px] text-ink">{latest.sym}</p>
+              <p className="text-[10px] sm:text-[11px] text-muted mt-1">by {latest.doctorName} · {fmtDT(latest.createdAt)}</p>
             </div>
           )}
 
-          <div className="bg-surface border border-line rounded-[4px] shadow-sm overflow-hidden">
-            <div className="px-4 py-3 border-b border-line bg-stripe text-[11px] font-bold text-muted uppercase tracking-wider">Recent records</div>
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-stripe border-b border-line">
-                  {['Date', 'BP', 'Temp', 'HR', 'Weight', 'Symptoms', 'By'].map((h, i) => (
-                    <th key={`${h}-${i}`} className="px-4 py-2.5 text-[11px] font-bold text-muted uppercase tracking-wider">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-line">
-                {sorted.slice(0, 10).map((v, i) => (
-                  <tr key={`${v.id}-${i}`} className="hover:bg-stripe transition-colors text-[13px]">
-                    <td className="px-4 py-2.5 text-muted">{fmtD(v.date)}</td>
-                    <td className="px-4 py-2.5 text-ink font-medium">{v.bp || '—'}</td>
-                    <td className="px-4 py-2.5 text-ink">{v.temp || '—'}</td>
-                    <td className="px-4 py-2.5 text-ink">{v.hr || '—'}</td>
-                    <td className="px-4 py-2.5 text-ink">{v.wt || '—'}</td>
-                    <td className="px-4 py-2.5 text-muted max-w-[220px] truncate">{v.sym || '—'}</td>
-                    <td className="px-4 py-2.5 text-muted">{v.doctorName || '—'}</td>
+          <div className="bg-surface border border-line rounded-xl sm:rounded-[4px] shadow-sm overflow-hidden min-w-0">
+            <div className="px-3.5 sm:px-4 py-2.5 sm:py-3 border-b border-line bg-stripe text-[10px] sm:text-[11px] font-bold text-muted uppercase tracking-wider">Recent records</div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse min-w-[500px]">
+                <thead>
+                  <tr className="bg-stripe border-b border-line">
+                    {['Date', 'BP', 'Temp', 'HR', 'Weight', 'Symptoms', 'By'].map((h, i) => (
+                      <th key={`${h}-${i}`} className="px-3 sm:px-4 py-2 sm:py-2.5 text-[10px] sm:text-[11px] font-bold text-muted uppercase tracking-wider">{h}</th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-line">
+                  {sorted.slice(0, 10).map((v, i) => (
+                    <tr key={`${v.id}-${i}`} className="hover:bg-stripe transition-colors text-xs sm:text-[13px]">
+                      <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-muted whitespace-nowrap">{fmtD(v.date)}</td>
+                      <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-ink font-medium whitespace-nowrap">{v.bp || '—'}</td>
+                      <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-ink whitespace-nowrap">{v.temp || '—'}</td>
+                      <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-ink whitespace-nowrap">{v.hr || '—'}</td>
+                      <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-ink whitespace-nowrap">{v.wt || '—'}</td>
+                      <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-muted max-w-[180px] sm:max-w-[220px] truncate">{v.sym || '—'}</td>
+                      <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-muted whitespace-nowrap">{v.doctorName || '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}

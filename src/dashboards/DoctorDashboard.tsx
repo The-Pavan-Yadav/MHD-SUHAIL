@@ -174,7 +174,7 @@ export default function DoctorDashboard({ onLogout }: { onLogout: () => void }) 
       <div className="p-4 border-t border-slate-200 space-y-2 shrink-0">
         <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-50 border border-slate-200">
           {me.photo ? (
-            <img src={me.photo} alt="" className="w-9 h-9 rounded-full object-cover ring-2 ring-primary/40" />
+            <img src={me.photo} loading="lazy" decoding="async" alt="" className="w-9 h-9 rounded-full object-cover ring-2 ring-primary/40" />
           ) : (
             <div className="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center">
               <UserCircle className="w-5 h-5 text-[#2a8eff]" strokeWidth={1.5} />
